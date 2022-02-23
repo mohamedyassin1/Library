@@ -4,6 +4,7 @@ Instructions for team members to use:
 Clone repo and open folder in vs code, then
 inside the root directory, do "npm install" in command prompt, this will install all the modules listed in the dependencies under package.json.
 
+Install nodemon via "npm install -g nodemon"
 To run, do:
 "nodemon index.js" on command prompt in the same directory
 and go to localhost:3000 on google chrome.
