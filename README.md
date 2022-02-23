@@ -1,8 +1,8 @@
 # Library
 
 Instructions for team members to use:
-Clone repo and open folder in vs code
-Inside the root directory, do "npm install" in command prompt, this will install all the modules listed in the dependencies under package.json.
+Clone repo and open folder in vs code, then
+inside the root directory, do "npm install" in command prompt, this will install all the modules listed in the dependencies under package.json.
 
 To run, do:
 nodemon index.js
