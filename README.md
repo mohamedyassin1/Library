@@ -9,4 +9,4 @@ To run, do:
 "nodemon index.js" on command prompt in the same directory
 and go to localhost:3000 on google chrome.
 
-When you make changes, do not push the node_modules folder, keep that on your own machine, and work on your own branch.
+When you make changes, do not push the node_modules folder, keep that on your own machine, and **work on your own branch**.
