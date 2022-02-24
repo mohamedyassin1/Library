@@ -5,11 +5,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
 </head>
 <%- include('partials/navbar.ejs') %>
 
     <body>
+        <div class="container-fluid"></div>
+        <h2 class="display-6 text-center">Try Resizing This</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-warning">
+                Here we can have the first book for example.
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-success">
+                Here we can have the second book, for example.
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-primary">
+                Here we can have the third book, for example.
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-primary">
+                Here we can have the fourth book, for example.
+            </div>
+        </div>
     </body>
 
 </html>
