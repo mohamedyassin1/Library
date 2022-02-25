@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/navbar.ejs') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Search Books</title>
+    
+  </head>
+  <body>
+    <h1>Books</h1>
+
+    <ul id="myList"></ul>
+    <div id="message"></div>
+
+    <script>
+        const api_url = '/api/books'
+        async function getBooks(){
+            const response = await fetch(api_url.concat(`?keyword=${'<%= keyword %>'}`));
+            const data = await response.json();
+            const list = document.getElementById("myList");
+            if(data.length == 0){
+                document.getElementById("message").innerHTML = `No Books with keyword '${'<%= keyword %>'}'`;
+                return;
+            }
+            data.forEach((item)=>{
+                let li = document.createElement("li");
+                li.innerText = item.Name;
+                list.appendChild(li);
+            });
+        }
+        console.log('<%= keyword %>');
+        getBooks();
+    </script>
+	
+  </body>
+</html>

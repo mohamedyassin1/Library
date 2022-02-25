@@ -24,13 +24,22 @@ app.get('/', (req, res) => {
     res.render('home'); //don't need to say views/home.ejs, as the default place to look is views.
 });
 
+//search
+app.get('/search', (req, res) => {
+    res.render('search', {keyword: req.query.keyword});
+});
+
 //api
 app.get('/api/books', (req, res) => {
-    connection.query('SELECT * FROM `Books`', function (error, results, fields) {
-        if (error) console.error('bad query!');
+    const where = req.query.keyword ? `name LIKE '%${req.query.keyword}%'` : '1=1';
+    connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
         // connected!
-        console.log('The result is: ', results.length);
-        res.send(results[0]);
+        res.json(results);
     });
     
 });
