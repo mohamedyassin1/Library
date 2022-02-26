@@ -11,7 +11,32 @@
   <body>
     <h1>Books</h1>
 
-    <ul id="myList"></ul>
+    <!--<ul= id="myList"></ul>-->
+    <div class="container-fluid">
+      <div class="row" id="bookRow">
+      </div>
+        <style>
+          .card {
+              margin-top: 10px;
+              margin-left: 10px;
+              margin-bottom: 10px;
+              margin-right: 10px;
+              max-height: 300px;
+              min-height: 300px;
+              transition: .3s;
+          }
+          
+          .card-img-top {
+              width: 100%;
+              height: 10vw;
+              object-fit: cover;
+          }
+          .card:hover{
+            box-shadow: 2px 2px 2px grey;
+            transform:scale(1.05);
+          }
+      </style>
+    </div>
     <div id="message"></div>
 
     <script>
@@ -24,11 +49,17 @@
                 document.getElementById("message").innerHTML = `No Books with keyword '${'<%= keyword %>'}'`;
                 return;
             }
+            let bookRowBody = "";
             data.forEach((item)=>{
-                let li = document.createElement("li");
-                li.innerText = item.Name;
-                list.appendChild(li);
-            });
+               bookRowBody = bookRowBody + `<div class="card" style="width: 18rem;">
+      <img src="https://i.fbcd.co/products/resized/resized-750-500/ae2d64e634f5beaa6f0e867d529ece28f0504e9e24fc4d5e0d6fd21f0a05df7f.jpg" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">${item.Name}</h5>
+        <a href="/" class="stretched-link"></a>
+      </div>
+    </div>`;
+              });
+            document.getElementById("bookRow").innerHTML = bookRowBody;
         }
         console.log('<%= keyword %>');
         getBooks();
