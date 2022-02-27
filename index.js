@@ -44,11 +44,11 @@ app.get('/api/books', (req, res) => {
 
 });
 //get method to render the form to add a book
-app.get('/api/addBookForm', (req, res) => {
+app.get('/addBookForm', (req, res) => {
     res.render('addBookForm');
 })
 //post method to add books
-app.post('/api/addBookForm', (req, res) => {
+app.post('/api/books', (req, res) => {
     const { name, status } = req.body;
     let authorId = 0;
     var sql = `INSERT INTO Books (Name, Status, AID) VALUES ('${name}', '${status}', ${authorId})`;
