@@ -10,20 +10,25 @@
 <%- include('partials/navbar.ejs') %>
 
     <body>
-        <h1>Add A Book</h1>
-        <form action="/addBookForm" method="post">
-            <section>
-                <label for="name">Enter The Book Name</label>
-                <input type="text" id="name" placeholder="name" name="name">
-            </section>
-            <section>
-                <label for="status">Enter the Book Status (Available/Non Available)</label>
-                <br>
-                <input type="text" id="status" placeholder="status" name="status">
-            </section>
-            <button>Publish</button>
-        </form>
-        <a href="/">Back to Home</a>
+        <div class="container-fluid">
+            <h1 class="display-4 text-center">Add A Book</h1>
+            <div class="col-md-4 col-md-offset-4">
+                <form action="/addBookForm" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Enter The Book Name</label>
+                        <input type="text" id="name" placeholder="name" name="name" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Enter the Book Status (Available/Non Available)</label>
+                        <br>
+                        <input type="text" id="status" placeholder="status" name="status" class="form-control">
+                    </div>
+                    <button class="btn btn-primary">Publish</button>
+                </form>
+            </div>
+            <br>
+            <a href="/" class="btn btn-warning">Back to Home</a>
+        </div>
     </body>
 
 </html>
