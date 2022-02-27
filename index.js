@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-
 const mysql = require('mysql');
 const connection = mysql.createConnection({
     host: '34.83.176.15',
@@ -9,7 +8,8 @@ const connection = mysql.createConnection({
     password: 'tNe855bucM5wHojL',
     database: 'librarydb'
 });
-
+const res = require('express/lib/response')
+app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka read HTML form data)
 app.use(express.static(path.join(__dirname, '/public')));
 //public
 //css
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 //search
 app.get('/search', (req, res) => {
-    res.render('search', {keyword: req.query.keyword});
+    res.render('search', { keyword: req.query.keyword });
 });
 
 //api
@@ -41,11 +41,27 @@ app.get('/api/books', (req, res) => {
         // connected!
         res.json(results);
     });
-    
-});
 
+});
+app.get('/addBookForm', (req, res) => {
+    res.render('addBookForm');
+})
+//post method to add books
+app.post('/addBookForm', (req, res) => {
+    const { name, status } = req.body;
+    let authorId = 0;
+    var sql = `INSERT INTO Books (Name, Status, AID) VALUES ('${name}', '${status}', ${authorId})`;
+    connection.query(sql, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    res.redirect('/');
+})
 connection.connect((err) => {
-    if(err){
+    if (err) {
         console.error('error cannot conenct to db');
         return;
     }

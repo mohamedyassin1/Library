@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Book</title>
+</head>
+<%- include('partials/navbar.ejs') %>
+
+    <body>
+        <h1>Add A Book</h1>
+        <form action="/addBookForm" method="post">
+            <section>
+                <label for="name">Enter The Book Name</label>
+                <input type="text" id="name" placeholder="name" name="name">
+            </section>
+            <section>
+                <label for="status">Enter the Book Status (Available/Non Available)</label>
+                <br>
+                <input type="text" id="status" placeholder="status" name="status">
+            </section>
+            <button>Publish</button>
+        </form>
+        <a href="/">Back to Home</a>
+    </body>
+
+</html>
