@@ -41,7 +41,6 @@ app.get('/api/books', (req, res) => {
         // connected!
         res.json(results);
     });
-
 });
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
@@ -61,12 +60,80 @@ app.post('/api/books', (req, res) => {
     })
     res.redirect('/');
 })
+//get method to render the form to login
+app.get('/login', (req, res) => {
+    res.render('loginForm');
+})
+//post method to login
+app.post('/api/login', (req, res) => {
+    const { email,username, password } = req.body;
+    // connection.query(`SELECT email,username,password FROM Registered`
+    // ,function (error, result, fields) {
+    //     if (error) {
+    //         console.error(error);
+    //         res.status(400).send();
+    //         return;
+    //     }else{
+    //         var obj = result;
+
+    //         for(var i=0;i<obj.length;i++){
+    //             if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
+    //                 res.redirect('/personal');
+    //             }
+    //         }
+    //         res.redirect('/login');
+    //     }
+    // })
+
+    //Below for testing. Uncommet above to actually use DB
+    var obj = [
+        {"email":"john@gmail.com","username":"John","password":"12345"},
+        {"email":"kelly@gmail.com","username":"Kelly","password":"54321"}
+            ];
+
+    for(var i=0;i<obj.length;i++){
+        if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
+            res.redirect('/personal');
+            //console.log('/personal');
+        }
+    }
+    res.redirect('/login');
+})
+//get method personal
+app.get('/personal',(req,res)=>{
+    res.render('personal');
+
+})
+//get method to render the form to signup
+app.get('/signUp', (req, res) => {
+    res.render('signup');
+})
+
+//post method to add books
+app.post('/api/signUp', (req, res) => {
+    const { email,username, password } = req.body;
+    connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
+    ,[
+        email,
+        username,
+        password
+    ], function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    console.log(username+password+email);
+    res.redirect('/personal');
+})
+
+
 connection.connect((err) => {
     if (err) {
         console.error('error cannot conenct to db');
         return;
     }
-
     console.log('connected to db');
 });
 
