@@ -41,7 +41,6 @@ app.get('/api/books', (req, res) => {
         // connected!
         res.json(results);
     });
-
 });
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
@@ -135,7 +134,6 @@ connection.connect((err) => {
         console.error('error cannot conenct to db');
         return;
     }
-
     console.log('connected to db');
 });
 
