@@ -2,15 +2,23 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mysql = require('mysql');
+const session = require('express-session'); 
 const connection = mysql.createConnection({
     host: '34.83.176.15',
     user: 'root',
     password: 'tNe855bucM5wHojL',
     database: 'librarydb'
 });
-const res = require('express/lib/response')
+const res = require('express/lib/response');
+const { request } = require('http');
 app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka read HTML form data)
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+
 //public
 //css
 //js
@@ -90,19 +98,31 @@ app.post('/api/login', (req, res) => {
         {"email":"john@gmail.com","username":"John","password":"12345"},
         {"email":"kelly@gmail.com","username":"Kelly","password":"54321"}
             ];
-
+    
+    let found=false;
     for(var i=0;i<obj.length;i++){
         if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
-            res.redirect('/personal');
+            req.session.loggedIn = true;
+		    req.session.username = email;
+            found=true;
+            break;
+            //res.redirect('/personal');
             //console.log('/personal');
         }
     }
-    res.redirect('/login');
+    if(found){
+        res.redirect('/personal');
+    }else{
+        res.redirect('/login');
+    }
 })
 //get method personal
 app.get('/personal',(req,res)=>{
-    res.render('personal');
-
+    if(req.session.loggedIn){
+        res.render('personal',{'email':req.session.username});
+    }else{
+        res.render('home');
+    }
 })
 //get method to render the form to signup
 app.get('/signUp', (req, res) => {
@@ -128,7 +148,12 @@ app.post('/api/signUp', (req, res) => {
     res.redirect('/personal');
 })
 
-
+//get method to render the form to signup
+app.get('/logout', (req, res) => {
+    req.session.loggedIn=false;
+    req.session.username="";
+    res.redirect('/');
+})
 connection.connect((err) => {
     if (err) {
         console.error('error cannot conenct to db');
