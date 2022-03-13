@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
-<%- include('partials/navbar.ejs') %>
+<%- include('partials/loggedInNavbar.ejs') %>
 
     <body style="background-color:rgb(204, 208, 211);">
         <div class="container-fluid" >
             <div class="align-self-center" style="background-color:rgb(255, 255, 255); width:50%; margin:100px auto; border-radius:10px; vertical-align: middle; ">
-                <h1 class="display-5 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">Logged In</h1>
+                <h1 class="display-5 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">Logged In <%=email%></h1>
             </div>
         </div>
     </body>
