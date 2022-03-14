@@ -31,7 +31,12 @@ app.get('/search', (req, res) => {
 
 //Book Detail page
 app.get('/bookDetail', (req, res) => {
-    res.render('bookDetail', { book_id: req.query.book_id });
+    const where = `ID = '${req.query.ID}'`;
+    connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
+        if (err) throw err;
+        console.log('asdas' + results[0].Name)
+        res.render('bookDetail', { book: results });
+    });
 });
 
 //api
