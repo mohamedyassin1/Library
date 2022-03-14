@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Detail</title>
+</head>
+<%- include('partials/navbar.ejs') %>
+    <script>
+        const response = await fetch(api_url.concat(`?keyword=${'<%= keyword %>'}`));
+        const data = await response.json();
+        const list = document.getElementById("myList");
+        if (data.length == 0) {
+            document.getElementById("message").innerHTML = `No Books with keyword '${'<%= keyword %>'}'`;
+            return;
+        }
+    </script>
+
+    <body>
+        <h1>Book Detail</h1>
+        <section>
+            <label for="name" id="bookName">
+                <%= book.Name %>
+            </label>
+        </section>
+        <section>
+            <label for="status" id="bookStatus">
+                <%= book.Status %>
+            </label>
+            <br>
+        </section>
+        <a href="/">Back to Home</a>
+
+        <script>
+            const api_url = '/api/getBookDetail'
+            async function getBookDetail() {
+                const response = await fetch(api_url.concat(`?keyword=${'<%= keyword %>'}`));
+                const data = await response.json();
+                const list = document.getElementById("myList");
+                if (data.length == 0) {
+                    document.getElementById("message").innerHTML = `No Books with keyword '${'<%= keyword %>'}'`;
+                    return;
+                }
+
+                let bookRowBody = "";
+                data.forEach((item) => {
+
+                });
+                document.getElementById("bookRow").innerHTML = bookRowBody;
+            }
+            console.log('<%= keyword %>');
+            getBookDetail();
+        </script>
+    </body>
+
+</html>
