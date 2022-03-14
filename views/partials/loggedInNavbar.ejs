@@ -1,12 +1,17 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 
-<script type = "text/javascript" >
-    function preventBack(){window.history.forward();}
-     setTimeout("preventBack()", 0);
-     window.onunload=function(){null};
- </script>
- 
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-danger">
+<style>
+    .navbar-custom {
+        background-color: black;
+    }
+</style>
+<script type="text/javascript">
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+</script>
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark navbar-custom">
     <div class="container-fluid">
         <a class="navbar-brand" href="/" style="margin-right:35%">Library</a>
         <form class="d-flex" action="/search">

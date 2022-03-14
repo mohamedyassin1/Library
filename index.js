@@ -45,7 +45,6 @@ app.get('/api/bookDetail', (req, res) => {
     const where = `ID = '${req.query.ID}'`;
     connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
         if (err) throw err;
-        console.log('asdas' + results[0].Name)
         res.render('bookDetail', { book: results });
     });
 });
@@ -63,7 +62,7 @@ app.get('/api/books', (req, res) => {
         res.json(results);
     });
 });
-
+//Not sure what this is
 // app.get('/api/getBookDetail', (req, res) => {
 //     const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
 //     connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
@@ -180,6 +179,9 @@ app.get('/logout', (req, res) => {
     req.session.loggedIn = false;
     req.session.username = "";
     res.redirect('/');
+})
+app.get('/admin', (req, res) => {
+    res.render('admin');
 })
 connection.connect((err) => {
     if (err) {
