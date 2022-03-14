@@ -41,6 +41,16 @@ app.get('/search', (req, res) => {
     res.render('search', { keyword: req.query.keyword });
 });
 
+//Book Detail page
+app.get('/bookDetail', (req, res) => {
+    const where = `ID = '${req.query.ID}'`;
+    connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
+        if (err) throw err;
+        console.log('asdas' + results[0].Name)
+        res.render('bookDetail', { book: results });
+    });
+});
+
 //api
 app.get('/api/books', (req, res) => {
     const where = req.query.keyword ? `name LIKE '%${req.query.keyword}%'` : '1=1';
@@ -54,6 +64,21 @@ app.get('/api/books', (req, res) => {
         res.json(results);
     });
 });
+
+app.get('/api/getBookDetail', (req, res) => {
+    const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
+    connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+        // connected!
+        res.json(results);
+    });
+
+});
+
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
     res.render('addBookForm');
