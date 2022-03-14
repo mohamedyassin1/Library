@@ -29,9 +29,9 @@ app.get('/search', (req, res) => {
     res.render('search', { keyword: req.query.keyword });
 });
 
-//bookdetail
+//Book Detail page
 app.get('/bookDetail', (req, res) => {
-    res.render('bookDetail', { keyword: req.query.keyword });
+    res.render('bookDetail', { book_id: req.query.book_id });
 });
 
 //api
