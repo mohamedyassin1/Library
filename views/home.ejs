@@ -8,6 +8,11 @@
     <title>Home Page</title>
 </head>
 <%- include('partials/navbar.ejs') %>
+    <style>
+        body {
+            background-color: ghostwhite;
+        }
+    </style>
 
     <body>
         <div class="container-fluid">
@@ -16,6 +21,19 @@
             <div class=" row">
                 <div class="col-4 text-dark text-center">
                     <h3>Top Rated Books</h3>
+                    <% books.sort(function(a, b) { %>
+                        <% return b.AverageRating - a.AverageRating ; %>
+                            <% }); %>
+                                <ul class="list-group">
+                                    <% let sortedRatings=[]; %>
+                                        <% for (let b of books) { %>
+                                            <li class="list-group-item">
+                                                <%= b.Name %> Average Rating: <%= b.AverageRating %>
+                                                        <a href="/api/bookdetail?ID=<%= b.ID %>"
+                                                            class="stretched-link"></a>
+                                            </li>
+                                            <% } %>
+                                </ul>
                 </div>
                 <div class=" col-8">
                     <div class="row">
