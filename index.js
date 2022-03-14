@@ -62,6 +62,7 @@ app.get('/api/books', (req, res) => {
         res.json(results);
     });
 });
+
 //Not sure what this is
 // app.get('/api/getBookDetail', (req, res) => {
 //     const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
@@ -75,6 +76,42 @@ app.get('/api/books', (req, res) => {
 //         res.json(results);
 //     });
 // });
+
+
+//api
+app.post('/api/AddRatingForABook', (req, res) => {
+
+    const { userid, ratingstar, bookid } = req.body;
+    connection.query(`INSERT INTO librarydb.Rating (UserID, RatingStar, BookID) VALUES (?,?,?)`
+        , [
+            userid,
+            ratingstar,
+            bookid
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+        })
+    console.log(userid + ratingstar + bookid);
+    res.redirect('/api/getBookDetail');
+});
+
+app.get('/api/getBookDetail', (req, res) => {
+    const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
+    connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+        // connected!
+        res.json(results);
+    });
+
+});
+
 
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
