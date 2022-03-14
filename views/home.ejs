@@ -11,12 +11,14 @@
 
     <body>
         <div class="container-fluid">
-            <h2 class="display-6 text-center">Welcome To The SENG401 Library!</h2>
-            <div class="row">
-                <div class="col-3 text-light text-center">
-                    <a href="/addBookForm" class="btn btn-primary">Add Book</a>
+            <h2 class="display-6 text-center" style="padding-top:20px; padding-bottom:20px;">Welcome To The SENG401
+                Library!</h2>
+            <div class=" row">
+                <div class="col-4 text-dark text-center">
+                    <a href="/addBookForm" class="btn btn-primary" style="width:100%">Add Book</a>
+                    <h3>Top Rated Books</h3>
                 </div>
-                <div class=" col-9">
+                <div class=" col-8">
                     <div class="row">
                         <% for (let b of books) { %>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">

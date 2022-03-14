@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mysql = require('mysql');
-const session = require('express-session'); 
+const session = require('express-session');
 const connection = mysql.createConnection({
     host: '34.83.176.15',
     user: 'root',
@@ -14,9 +14,9 @@ const { request } = require('http');
 app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka read HTML form data)
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(session({
-	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
 }));
 
 //public
@@ -31,7 +31,6 @@ app.set('views', path.join(__dirname, '/views')); //Add this so that we can run 
 app.get('/', (req, res) => {
     connection.query("SELECT * FROM Books", function (err, books, fields) {
         if (err) throw err;
-        console.log(books);
         res.render('home', { books })
     });
 });
@@ -78,7 +77,7 @@ app.get('/login', (req, res) => {
 })
 //post method to login
 app.post('/api/login', (req, res) => {
-    const { email,username, password } = req.body;
+    const { email, username, password } = req.body;
     // connection.query(`SELECT email,username,password FROM Registered`
     // ,function (error, result, fields) {
     //     if (error) {
@@ -99,32 +98,32 @@ app.post('/api/login', (req, res) => {
 
     //Below for testing. Uncommet above to actually use DB
     var obj = [
-        {"email":"john@gmail.com","username":"John","password":"12345"},
-        {"email":"kelly@gmail.com","username":"Kelly","password":"54321"}
-            ];
-    
-    let found=false;
-    for(var i=0;i<obj.length;i++){
-        if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
+        { "email": "john@gmail.com", "username": "John", "password": "12345" },
+        { "email": "kelly@gmail.com", "username": "Kelly", "password": "54321" }
+    ];
+
+    let found = false;
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
             req.session.loggedIn = true;
-		    req.session.username = email;
-            found=true;
+            req.session.username = email;
+            found = true;
             break;
             //res.redirect('/personal');
             //console.log('/personal');
         }
     }
-    if(found){
+    if (found) {
         res.redirect('/personal');
-    }else{
+    } else {
         res.redirect('/login');
     }
 })
 //get method personal
-app.get('/personal',(req,res)=>{
-    if(req.session.loggedIn){
-        res.render('personal',{'email':req.session.username});
-    }else{
+app.get('/personal', (req, res) => {
+    if (req.session.loggedIn) {
+        res.render('personal', { 'email': req.session.username });
+    } else {
         res.render('home');
     }
 })
@@ -135,27 +134,27 @@ app.get('/signUp', (req, res) => {
 
 //post method to add books
 app.post('/api/signUp', (req, res) => {
-    const { email,username, password } = req.body;
+    const { email, username, password } = req.body;
     connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
-    ,[
-        email,
-        username,
-        password
-    ], function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-    })
-    console.log(username+password+email);
+        , [
+            email,
+            username,
+            password
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+        })
+    console.log(username + password + email);
     res.redirect('/personal');
 })
 
 //get method to render the form to signup
 app.get('/logout', (req, res) => {
-    req.session.loggedIn=false;
-    req.session.username="";
+    req.session.loggedIn = false;
+    req.session.username = "";
     res.redirect('/');
 })
 connection.connect((err) => {
