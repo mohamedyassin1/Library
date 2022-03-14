@@ -6,35 +6,117 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Detail</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <%- include('partials/navbar.ejs') %>
+    <!-- This 5 stars rating style is referenced to this source. https://codepen.io/hesguru/pen/BaybqXv -->
+    <style>
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+
+        .rate:not(:checked)>input {
+            position: absolute;
+            top: -9999px;
+        }
+
+        .rate:not(:checked)>label {
+            float: right;
+            width: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 30px;
+            color: #ccc;
+        }
+
+        .rate:not(:checked)>label:before {
+            content: '★ ';
+        }
+
+        .rate>input:checked~label {
+            color: #ffc700;
+        }
+
+        .rate:not(:checked)>label:hover,
+        .rate:not(:checked)>label:hover~label {
+            color: #deb217;
+        }
+
+        .rate>input:checked+label:hover,
+        .rate>input:checked+label:hover~label,
+        .rate>input:checked~label:hover,
+        .rate>input:checked~label:hover~label,
+        .rate>label:hover~input:checked~label {
+            color: #c59b08;
+        }
+    </style>
+
 
     <body>
-        <div style="padding: 0 20% 0 20%;">
+        <div style="padding: 2% 20% 0 20%;">
             <h1>Book Detail</h1>
             <%= book.Name %>
                 <section>
-                    <label>
+                    <label style="font-weight:bold">
                         Title:
                     </label>
-                    <label id="bookName">
+                    <label id="bookName" style="font-weight:bold">
                         <%=book[0].Name %>
+                    </label>
+                    <label style="font-weight:bold">
+                        (
+                    </label>
+                    <label id="bookRating" style="font-weight:bold">
+                        <%=book[0].AverageRating %> points, based on <%=book[0].TotalRatingsCount %> ratings)
                     </label>
                 </section>
                 <section>
-                    <label>
+                    <label style="font-weight:bold">
                         Status:
                     </label>
-                    <label id="bookStatus">
+                    <label id="bookStatus" style="font-weight:bold">
                         <%= book[0].Status %>
                     </label>
                     <br>
                 </section>
                 <section>
-                    <img
+                    <img width="200"
                         src="https://i.fbcd.co/products/resized/resized-750-500/ae2d64e634f5beaa6f0e867d529ece28f0504e9e24fc4d5e0d6fd21f0a05df7f.jpg" />
                 </section>
-                <a href="/">Back to Home</a>
+                <section>
+                    <label style="font-weight:bold;float:left;padding-top: 12px;">
+                        Please rate this book:
+                    </label>
+                    <div class="rate">
+                        <input type="radio" id="star5" name="bookrate" value="5" />
+                        <label for="star5" title="text">5 stars</label>
+                        <input type="radio" id="star4" name="bookrate" value="4" />
+                        <label for="star4" title="text">4 stars</label>
+                        <input type="radio" id="star3" name="bookrate" value="3" />
+                        <label for="star3" title="text">3 stars</label>
+                        <input type="radio" id="star2" name="bookrate" value="2" />
+                        <label for="star2" title="text">2 stars</label>
+                        <input type="radio" id="star1" name="bookrate" value="1" />
+                        <label for="star1" title="text">1 star</label>
+                    </div>
+                </section>
+                <script>
+                    $('input[type=radio][name=bookrate]').change(function () {
+                        debugger
+                        alert("Handler for .change() called." + this.value);
+
+                    });
+                </script>
+                <section style="position: absolute;padding-top: 40px">
+                    <a href="/">Back to Home</a>
+                </section>
+
+
+
+
         </div>
 
     </body>
