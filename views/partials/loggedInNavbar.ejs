@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+<script type = "text/javascript" >
+    function preventBack(){window.history.forward();}
+     setTimeout("preventBack()", 0);
+     window.onunload=function(){null};
+ </script>
+ 
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-danger">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/" style="margin-right:35%">Library</a>
+        <form class="d-flex" action="/search">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="Search For Book"
+                aria-label="Search For Book">
+            <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/#">My Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="/js/bootstrap.min.js"></script>
