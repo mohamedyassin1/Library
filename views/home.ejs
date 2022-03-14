@@ -11,28 +11,33 @@
 
     <body>
         <div class="container-fluid">
-            <h2 class="display-6 text-center">Try Resizing This</h2>
+            <h2 class="display-6 text-center">Welcome To The SENG401 Library!</h2>
             <div class="row">
-                <div class="col-3 bg-dark text-light text-center">
+                <div class="col-3 text-light text-center">
                     <a href="/addBookForm" class="btn btn-primary">Add Book</a>
                 </div>
                 <div class=" col-9">
-                    Here we can have the all the books for example. You can nest this further so this section can have
-                    4x4
-                    sections of books, for example:
                     <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-warning">
-                            Here we can have the first book for example.
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-success">
-                            Here we can have the second book, for example.
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-secondary">
-                            Here we can have the third book, for example.
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 bg-info">
-                            Here we can have the fourth book, for example.
-                        </div>
+                        <% for (let b of books) { %>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="card" style="height:100%;">
+                                    <img class="card-img-top"
+                                        src="https://i.fbcd.co/products/resized/resized-750-500/ae2d64e634f5beaa6f0e867d529ece28f0504e9e24fc4d5e0d6fd21f0a05df7f.jpg"
+                                        alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= b.Name %>
+                                        </h5>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                Status: <%= b.Status %>
+                                            </li>
+                                        </ul>
+                                        <a href="/" class="stretched-link"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
                     </div>
                 </div>
             </div>

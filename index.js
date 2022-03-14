@@ -21,7 +21,11 @@ app.set('views', path.join(__dirname, '/views')); //Add this so that we can run 
 
 //Home Page
 app.get('/', (req, res) => {
-    res.render('home'); //don't need to say views/home.ejs, as the default place to look is views.
+    connection.query("SELECT * FROM Books", function (err, books, fields) {
+        if (err) throw err;
+        console.log(books);
+        res.render('home', { books })
+    });
 });
 
 //search
@@ -41,7 +45,6 @@ app.get('/api/books', (req, res) => {
         // connected!
         res.json(results);
     });
-
 });
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
