@@ -41,7 +41,7 @@ app.get('/search', (req, res) => {
 });
 
 //Book Detail page
-app.get('/bookDetail', (req, res) => {
+app.get('/api/bookDetail', (req, res) => {
     const where = `ID = '${req.query.ID}'`;
     connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
         if (err) throw err;
@@ -64,19 +64,18 @@ app.get('/api/books', (req, res) => {
     });
 });
 
-app.get('/api/getBookDetail', (req, res) => {
-    const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
-    connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-        // connected!
-        res.json(results);
-    });
-
-});
+// app.get('/api/getBookDetail', (req, res) => {
+//     const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
+//     connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
+//         if (error) {
+//             console.error(error);
+//             res.status(400).send();
+//             return;
+//         }
+//         // connected!
+//         res.json(results);
+//     });
+// });
 
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
