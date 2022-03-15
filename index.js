@@ -55,7 +55,7 @@ app.get('/api/bookDetailMember', (req, res) => {
         if (err) throw err;
         connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
             if (err) throw err;
-        res.render('bookDetailsMember', { book: results, comments: commentsResult });
+        res.render('bookDetailsMember', { book: results, comments: commentsResult,r_email:req.session.email });
      });
     });
 });
