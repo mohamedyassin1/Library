@@ -48,6 +48,14 @@ app.get('/api/bookDetail', (req, res) => {
         res.render('bookDetail', { book: results });
     });
 });
+//Book Detail Member page
+app.get('/api/bookDetailMember', (req, res) => {
+    const where = `ID = '${req.query.ID}'`;
+    connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
+        if (err) throw err;
+        res.render('bookDetailsMember', { book: results });
+    });
+});
 
 //api
 app.get('/api/books', (req, res) => {
@@ -162,53 +170,66 @@ app.get('/login', (req, res) => {
 //post method to login
 app.post('/api/login', (req, res) => {
     const { email, username, password } = req.body;
-    // connection.query(`SELECT email,username,password FROM Registered`
-    // ,function (error, result, fields) {
-    //     if (error) {
-    //         console.error(error);
-    //         res.status(400).send();
-    //         return;
-    //     }else{
-    //         var obj = result;
-
-    //         for(var i=0;i<obj.length;i++){
-    //             if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
-    //                 res.redirect('/personal');
-    //             }
-    //         }
-    //         res.redirect('/login');
-    //     }
-    // })
+    connection.query(`SELECT email,username,password FROM Registered`
+    ,function (error, result, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }else{
+            var obj = result;
+            let found=false;
+            for(var i=0;i<obj.length;i++){
+                if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
+                    //res.redirect('/personal');
+                    req.session.loggedIn = true;
+                    req.session.email = email;
+                    req.session.username=username;
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                res.redirect('/personal');
+            } else {
+                res.redirect('/login');
+            }
+        }
+    })
 
     //Below for testing. Uncommet above to actually use DB
-    var obj = [
-        { "email": "john@gmail.com", "username": "John", "password": "12345" },
-        { "email": "kelly@gmail.com", "username": "Kelly", "password": "54321" }
-    ];
+    // var obj = [
+    //     { "email": "john@gmail.com", "username": "John", "password": "12345" },
+    //     { "email": "kelly@gmail.com", "username": "Kelly", "password": "54321" }
+    // ];
 
-    let found = false;
-    for (var i = 0; i < obj.length; i++) {
-        if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
-            req.session.loggedIn = true;
-            req.session.username = email;
-            found = true;
-            break;
-            //res.redirect('/personal');
-            //console.log('/personal');
-        }
-    }
-    if (found) {
-        res.redirect('/personal');
-    } else {
-        res.redirect('/login');
-    }
+    // let found = false;
+    // for (var i = 0; i < obj.length; i++) {
+    //     if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
+    //         req.session.loggedIn = true;
+    //         req.session.username = email;
+    //         found = true;
+    //         break;
+    //         //res.redirect('/personal');
+    //         //console.log('/personal');
+    //     }
+    // }
+    // if (found) {
+    //     res.redirect('/personal');
+    // } else {
+    //     res.redirect('/login');
+    // }
 })
 //get method personal
 app.get('/personal', (req, res) => {
     if (req.session.loggedIn) {
-        res.render('personal', { 'email': req.session.username });
+        connection.query("SELECT * FROM Books", function (err, books, fields) {
+            if (err) throw err;
+            //res.render('home', { books })
+            res.render('personal', { 'email': req.session.email,'username':req.session.username,books });
+        });
     } else {
-        res.render('home');
+        res.redirect('/home');
     }
 })
 //get method to render the form to signup
@@ -232,13 +253,16 @@ app.post('/api/signUp', (req, res) => {
             }
         })
     console.log(username + password + email);
+    req.session.loggedIn = true;
+    req.session.email = email;
+    req.session.username = username;
     res.redirect('/personal');
 })
 
 //get method to render the form to signup
 app.get('/logout', (req, res) => {
     req.session.loggedIn = false;
-    req.session.username = "";
+    req.session.email = "";
     res.redirect('/');
 })
 app.get('/admin', (req, res) => {

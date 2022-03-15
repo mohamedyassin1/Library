@@ -8,7 +8,7 @@
     <title>Book Detail</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
-<%- include('partials/navbar.ejs') %>
+<%- include('partials/loggedInNavbar.ejs') %>
     <!-- This 5 stars rating style is referenced to this source. https://codepen.io/hesguru/pen/BaybqXv -->
     <style>
         .rate {
@@ -108,11 +108,16 @@
         
                     });
                 </script>
+                <div class="comment">
+                    <form action="/action_page.php">
+                        <textarea id="w3review" name="w3review" rows="4" cols="50"></textarea>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
                 <section style="position: absolute;padding-top: 160px">
-                    <a href="/">Back to Home</a>
+                    <a href="/personal">Back to Home</a>
                 </section>
         </div>
         
     </body>
-
 </html>
