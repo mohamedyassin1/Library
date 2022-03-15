@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,4 +16,96 @@
             </div>
         </div>
     </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<!-- <%- include('partials/navbar.ejs') %> -->
+<%- include('partials/loggedInNavbar.ejs') %>
+
+    <style>
+        body {
+            background-color: ghostwhite;
+        }
+
+        .card {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        max-height: 300px;
+        transition: .1s;
+      }
+
+      .card-img-top {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .card:hover {
+        box-shadow: 2px 2px 2px grey;
+        transform: scale(1.05);
+      }
+    </style>
+
+    <body>
+        <div class="container-fluid" >
+            <div class="align-self-center" style="background-color:rgb(255, 255, 255); width:50%; margin:100px auto; border-radius:10px; vertical-align: middle; ">
+                <h1 class="display-5 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">Logged In <%=email%></h1>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <h2 class="display-6 text-center" style="padding-top:20px; padding-bottom:20px;">Welcome To The SENG401
+                Library!</h2>
+            <div class=" row">
+                <div class="col-4 text-dark text-center">
+                    <h3>Top Rated Books</h3>
+                    <% books.sort(function(a, b) { %>
+                        <% return b.AverageRating - a.AverageRating ; %>
+                            <% }); %>
+                                <ul class="list-group">
+                                    <% let sortedRatings=[]; %>
+                                        <% for (let b of books) { %>
+                                            <li class="list-group-item">
+                                                <%= b.Name %> Average Rating: <%= b.AverageRating %>
+                                                        <a href="/api/bookdetailMember?ID=<%= b.ID %>"
+                                                            class="stretched-link"></a>
+                                            </li>
+                                            <% } %>
+                                </ul>
+                </div>
+                <div class=" col-8">
+                    <div class="row">
+                        <% for (let b of books) { %>
+                            <%#<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">%>
+                                <div class="card" style="width:15rem;">
+                                    <img class="card-img-top"
+                                        src="https://i.fbcd.co/products/resized/resized-750-500/ae2d64e634f5beaa6f0e867d529ece28f0504e9e24fc4d5e0d6fd21f0a05df7f.jpg"
+                                        alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= b.Name %>
+                                        </h5>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                Status: <%= b.Status %>
+                                            </li>
+                                        </ul>
+                                        <a href="/api/bookdetailMember?ID=<%= b.ID %>" class="stretched-link"></a>
+                                    </div>
+                                </div>
+                            <%#</div>%>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
 </html>
