@@ -63,6 +63,31 @@ app.get('/api/books', (req, res) => {
     });
 });
 
+app.get('/api/books/:bookID', (req, res) => {
+    const where = `ID = '${req.params.bookID}'`;
+    connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+        var book = results[0];
+        //get authors
+        const where = `bookID = '${req.params.bookID}'`;
+        connection.query(`SELECT Fname, Lname FROM AuthorOf JOIN Authors ON AuthorOf.authorID = Authors.AID WHERE ${where}`, function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+            book.authors = results;
+            console.log(book.authors);
+            res.json(book);
+        });
+        //res.json(results);
+    });
+});
+
 //Not sure what this is
 // app.get('/api/getBookDetail', (req, res) => {
 //     const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
@@ -120,8 +145,7 @@ app.get('/addBookForm', (req, res) => {
 //post method to add books
 app.post('/api/books', (req, res) => {
     const { name, status } = req.body;
-    let authorId = 0;
-    var sql = `INSERT INTO Books (Name, Status, AID) VALUES ('${name}', '${status}', ${authorId})`;
+    var sql = `INSERT INTO Books (Name, Status) VALUES ('${name}', '${status}')`;
     connection.query(sql, function (error, results, fields) {
         if (error) {
             console.error(error);
