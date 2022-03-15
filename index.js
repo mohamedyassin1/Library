@@ -53,7 +53,8 @@ app.get('/api/bookDetailMember', (req, res) => {
     const where = `ID = '${req.query.ID}'`;
     connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
         if (err) throw err;
-        res.render('bookDetailsMember', { book: results });
+        //console.log(req.session.email);
+        res.render('bookDetailsMember', { book: results, r_email:req.session.email });
     });
 });
 
@@ -163,6 +164,22 @@ app.post('/api/books', (req, res) => {
     })
     res.redirect('/');
 })
+
+//post method to submit comment
+app.post('/api/submitComment', (req, res) => {
+    const {comments,bid,email} = req.body;
+    var sql = `INSERT INTO Comment (BID, Comment, R_email) VALUES ('${bid}', '${comments}', '${email}')`;
+    connection.query(sql, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    //console.log(email+bid+comments);
+    res.redirect('/personal');
+})
+
 //get method to render the form to login
 app.get('/login', (req, res) => {
     res.render('loginForm');
