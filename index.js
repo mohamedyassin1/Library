@@ -120,12 +120,12 @@ app.get('/api/books/:bookID', (req, res) => {
 //api
 app.post('/api/AddRatingForABook', (req, res) => {
 
-    const { userid, ratingstar, bookid } = req.body;
-    connection.query(`INSERT INTO librarydb.Rating (UserID, RatingStar, BookID) VALUES (?,?,?)`
+    const { email, bookrate, bid } = req.body;
+    connection.query(`INSERT INTO librarydb.Rating (username, RatingStar, BookID) VALUES (?,?,?)`
         , [
-            userid,
-            ratingstar,
-            bookid
+            email,
+            bookrate,
+            bid
         ], function (error, results, fields) {
             if (error) {
                 console.error(error);
@@ -133,8 +133,41 @@ app.post('/api/AddRatingForABook', (req, res) => {
                 return;
             }
         })
-    console.log(userid + ratingstar + bookid);
-    res.redirect('/api/getBookDetail');
+
+        connection.query(`SELECT * FROM Rating WHERE BookID=?`,
+        [
+            bid
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }else{
+                var count=0;
+                var obj = results;
+                for(var i=0;i<obj.length;i++){
+                    count+=obj[i].RatingStar;
+                }
+                
+                var avg = count/obj.length;
+                console.log(avg);
+            
+            connection.query(`UPDATE Books SET AverageRating = ?,TotalRatingsCount=? WHERE ID=?`,
+            [
+                avg,
+                obj.length,
+                bid
+            ], function (error, results, fields) {
+                if (error) {
+                    console.error(error);
+                    res.status(400).send();
+                    return;
+                }
+            })
+          }
+        })
+    //console.log(email + bookrate + bid);
+    res.redirect('/personal');
 });
 
 app.get('/api/getBookDetail', (req, res) => {

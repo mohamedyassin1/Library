@@ -8,9 +8,13 @@
     <title>Book Detail</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
+
 <%- include('partials/loggedInNavbar.ejs') %>
     <!-- This 5 stars rating style is referenced to this source. https://codepen.io/hesguru/pen/BaybqXv -->
     <style>
+        textarea{
+        border-radius: 10px;
+        }
         .rate {
             float: left;
             height: 46px;
@@ -52,6 +56,8 @@
         .rate>label:hover~input:checked~label {
             color: #c59b08;
         }
+
+        
     </style>
     <body>
         <div style="padding: 2% 20% 0 20%;">
@@ -88,34 +94,46 @@
                     <label style="font-weight:bold;float:left;padding-top: 12px;">
                         Please rate this book:
                     </label>
-                    <div class="rate">
-                        <input type="radio" id="star5" name="bookrate" value="5" />
-                        <label for="star5" title="text">5 stars</label>
-                        <input type="radio" id="star4" name="bookrate" value="4" />
-                        <label for="star4" title="text">4 stars</label>
-                        <input type="radio" id="star3" name="bookrate" value="3" />
-                        <label for="star3" title="text">3 stars</label>
-                        <input type="radio" id="star2" name="bookrate" value="2" />
-                        <label for="star2" title="text">2 stars</label>
-                        <input type="radio" id="star1" name="bookrate" value="1" />
-                        <label for="star1" title="text">1 star</label>
-                    </div>
+                    <form action="/api/AddRatingForABook" method="post">
+                        <div class="rate">
+                            <input type="radio" id="star5" name="bookrate" value="5" />
+                            <label for="star5" title="text">5 stars</label>
+                            <input type="radio" id="star4" name="bookrate" value="4" />
+                            <label for="star4" title="text">4 stars</label>
+                            <input type="radio" id="star3" name="bookrate" value="3" />
+                            <label for="star3" title="text">3 stars</label>
+                            <input type="radio" id="star2" name="bookrate" value="2" />
+                            <label for="star2" title="text">2 stars</label>
+                            <input type="radio" id="star1" name="bookrate" value="1" />
+                            <label for="star1" title="text">1 star</label>
+                            <input type="hidden" name="bid" value="<%=book[0].ID%>" required/>
+                            <input type="hidden" name="email" value="<%=r_email%>" required/>
+                        </div>
+                        <input type="submit" value="Rate"/>
+                    </form>
                 </section>
                 <script>
-                    $('input[type=radio][name=bookrate]').change(function () {
-                        debugger
-                        alert("Handler for .change() called." + this.value);
-        
-                    });
+                    // $('input[type=radio][name=bookrate]').change(function () {
+                    //     // debugger
+                    //      //alert("Handler for .change() called." + this.value);
+                    //     // console.log(email+book[0].ID);
+                    //     // var xhr = new XMLHttpRequest();
+                    //     // xhr.open("POST", /api/AddRatingForABook, true);
+                    //     // xhr.setRequestHeader('Content-Type', 'application/json');
+                    //     // xhr.send(JSON.stringify({
+                    //     //     ratingstar: this.value,
+                    //     //     userid: ,
+                    //     //     bookid: book[0].ID
+                    //     // }));
+                    // });
                 </script>
                 <div class="comment">
                     <form action="/api/submitComment" method = "post">
-                        <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+                        <input type="hidden" name="bid" value="<%=book[0].ID%>" required/>
+                        <input type="hidden" name="email" value="<%=r_email%>" required/>
+                        <textarea id="comments" name="comments" rows="2" cols="50" maxlength="100" required></textarea>
                         
-                        <input type="hidden" name="bid" value="<%=book[0].ID%>"/>
-                        <input type="hidden" name="email" value="<%=r_email%>"/>
-
-                        <input type="submit" value="Submit">
+                        <button type="submit">Submit</button>
                     </form>
                 </div>
                  <div class="submitted_comments">
