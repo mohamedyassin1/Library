@@ -45,7 +45,10 @@ app.get('/api/bookDetail', (req, res) => {
     const where = `ID = '${req.query.ID}'`;
     connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
         if (err) throw err;
-        res.render('bookDetail', { book: results });
+        connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
+            if (err) throw err;
+        res.render('bookDetail', { book: results, comments: commentsResult });
+        })
     });
 });
 //Book Detail Member page
