@@ -109,8 +109,12 @@
                     });
                 </script>
                 <div class="comment">
-                    <form action="/action_page.php">
-                        <textarea id="w3review" name="w3review" rows="4" cols="50"></textarea>
+                    <form action="/api/submitComment" method = "post">
+                        <textarea id="comments" name="comments" rows="4" cols="50"></textarea>
+                        
+                        <input type="hidden" name="bid" value="<%=book[0].ID%>"/>
+                        <input type="hidden" name="email" value="<%=r_email%>"/>
+
                         <input type="submit" value="Submit">
                     </form>
                 </div>
