@@ -118,6 +118,16 @@
                         <input type="submit" value="Submit">
                     </form>
                 </div>
+                 <div class="submitted_comments">
+                    <% for (let c of comments) { %>
+                        <li class="list-group-item">
+                            <h5>
+                                <%= c.R_email %>
+                            </h5>
+                            <%=c.Comment %>
+                        </li>
+                        <% } %>
+                </div>
                 <section style="position: absolute;padding-top: 160px">
                     <a href="/personal">Back to Home</a>
                 </section>
