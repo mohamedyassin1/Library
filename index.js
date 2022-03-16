@@ -329,7 +329,7 @@ app.get('/confirmReservation', (req, res) => {
     //const where = `ID = '${req.query.ID}'`; //need to be updated when it's connected to the API
     const book = {
         book_name: 'Harry Potter',
-        author: 'JK',
+        author: [{Fname: "JK", Lname: "Rowling"}, {Fname: "Tester", Lname: "Juan"}],
         rating: 4.5,
         status: 'Available'
     }

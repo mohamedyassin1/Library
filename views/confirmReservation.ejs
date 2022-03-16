@@ -21,10 +21,17 @@
 
                     <div class="col-md-6">
                         <p class="bookInfo"><strong>Title: </strong> <%=book.book_name%> </p>
-                        <p class="bookInfo"><strong>Author:</strong> <%=book.author%> </p>
+                        <p class="bookInfo"><strong>Author:</strong> 
+                            <%book.author.forEach((element, index) => {%>
+                            <%=element.Fname + " " + element.Lname%>
+                            <% if(index < book.author.length-1) { %>
+                                <%=", "%>
+                            <% } %>
+                            <% }); %>
+                        </p>
 
-                        <span style="display: grid; grid-template-columns: 80px min-content;">
-                            <p class="bookInfo">Rating:  <%=book.rating%> </p>
+                        <span style="display: grid; grid-template-columns: 85px min-content;">
+                            <p class="bookInfo"><strong>Rating:</strong>  <%=book.rating%> </p>
                             <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/>
                         </span>
                         
