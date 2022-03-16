@@ -2,23 +2,15 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mysql = require('mysql');
-const session = require('express-session');
 const connection = mysql.createConnection({
     host: '34.83.176.15',
     user: 'root',
     password: 'tNe855bucM5wHojL',
     database: 'librarydb'
 });
-const res = require('express/lib/response');
-const { request } = require('http');
+const res = require('express/lib/response')
 app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka read HTML form data)
 app.use(express.static(path.join(__dirname, '/public')));
-app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-}));
-
 //public
 //css
 //js
@@ -29,38 +21,18 @@ app.set('views', path.join(__dirname, '/views')); //Add this so that we can run 
 
 //Home Page
 app.get('/', (req, res) => {
-    connection.query("SELECT * FROM Books", function (err, books, fields) {
-        if (err) throw err;
-        res.render('home', { books })
-    });
+    res.render('home'); //don't need to say views/home.ejs, as the default place to look is views.
+});
+
+
+//Home Page
+app.get('/reserve/', (req, res) => {
+    res.render('home'); //don't need to say views/home.ejs, as the default place to look is views.
 });
 
 //search
 app.get('/search', (req, res) => {
     res.render('search', { keyword: req.query.keyword });
-});
-
-//Book Detail page
-app.get('/api/bookDetail', (req, res) => {
-    const where = `ID = '${req.query.ID}'`;
-    connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
-        if (err) throw err;
-        connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
-            if (err) throw err;
-        res.render('bookDetail', { book: results, comments: commentsResult });
-        })
-    });
-});
-//Book Detail Member page
-app.get('/api/bookDetailMember', (req, res) => {
-    const where = `ID = '${req.query.ID}'`;
-    connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
-        if (err) throw err;
-        connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
-            if (err) throw err;
-        res.render('bookDetailsMember', { book: results, comments: commentsResult,r_email:req.session.email });
-     });
-    });
 });
 
 //api
@@ -76,115 +48,6 @@ app.get('/api/books', (req, res) => {
         res.json(results);
     });
 });
-
-app.get('/api/books/:bookID', (req, res) => {
-    const where = `ID = '${req.params.bookID}'`;
-    connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-        var book = results[0];
-        //get authors
-        const where = `bookID = '${req.params.bookID}'`;
-        connection.query(`SELECT Fname, Lname FROM AuthorOf JOIN Authors ON AuthorOf.authorID = Authors.AID WHERE ${where}`, function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(400).send();
-                return;
-            }
-            book.authors = results;
-            console.log(book.authors);
-            res.json(book);
-        });
-        //res.json(results);
-    });
-});
-
-//Not sure what this is
-// app.get('/api/getBookDetail', (req, res) => {
-//     const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
-//     connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
-//         if (error) {
-//             console.error(error);
-//             res.status(400).send();
-//             return;
-//         }
-//         // connected!
-//         res.json(results);
-//     });
-// });
-
-
-//api
-app.post('/api/AddRatingForABook', (req, res) => {
-
-    const { email, bookrate, bid } = req.body;
-    connection.query(`INSERT INTO librarydb.Rating (username, RatingStar, BookID) VALUES (?,?,?)`
-        , [
-            email,
-            bookrate,
-            bid
-        ], function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(400).send();
-                return;
-            }
-        })
-
-        connection.query(`SELECT * FROM Rating WHERE BookID=?`,
-        [
-            bid
-        ], function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(400).send();
-                return;
-            }else{
-                var count=0;
-                var obj = results;
-                for(var i=0;i<obj.length;i++){
-                    count+=obj[i].RatingStar;
-                }
-                
-                var avg = count/obj.length;
-                console.log(avg);
-            
-            connection.query(`UPDATE Books SET AverageRating = ?,TotalRatingsCount=? WHERE ID=?`,
-            [
-                avg,
-                obj.length,
-                bid
-            ], function (error, results, fields) {
-                if (error) {
-                    console.error(error);
-                    res.status(400).send();
-                    return;
-                }
-            })
-          }
-        })
-    //console.log(email + bookrate + bid);
-    res.redirect('/personal');
-});
-
-app.get('/api/getBookDetail', (req, res) => {
-    const where = req.query.name ? `name LIKE '%${req.query.name}%'` : '1=1';
-    connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-        // connected!
-        res.json(results);
-    });
-
-});
-
-
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
     res.render('addBookForm');
@@ -192,7 +55,8 @@ app.get('/addBookForm', (req, res) => {
 //post method to add books
 app.post('/api/books', (req, res) => {
     const { name, status } = req.body;
-    var sql = `INSERT INTO Books (Name, Status) VALUES ('${name}', '${status}')`;
+    let authorId = 0;
+    var sql = `INSERT INTO Books (Name, Status, AID) VALUES ('${name}', '${status}', ${authorId})`;
     connection.query(sql, function (error, results, fields) {
         if (error) {
             console.error(error);
@@ -202,127 +66,88 @@ app.post('/api/books', (req, res) => {
     })
     res.redirect('/');
 })
-
-//post method to submit comment
-app.post('/api/submitComment', (req, res) => {
-    const {comments,bid,email} = req.body;
-    var sql = `INSERT INTO Comment (BID, Comment, R_email) VALUES ('${bid}', '${comments}', '${email}')`;
-    connection.query(sql, function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-    })
-    //console.log(email+bid+comments);
-    res.redirect('/personal');
-})
-
 //get method to render the form to login
 app.get('/login', (req, res) => {
     res.render('loginForm');
 })
+
 //post method to login
 app.post('/api/login', (req, res) => {
-    const { email, username, password } = req.body;
-    connection.query(`SELECT email,username,password FROM Registered`
-    ,function (error, result, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }else{
-            var obj = result;
-            let found=false;
-            for(var i=0;i<obj.length;i++){
-                if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
-                    //res.redirect('/personal');
-                    req.session.loggedIn = true;
-                    req.session.email = email;
-                    req.session.username=username;
-                    found = true;
-                    break;
-                }
-            }
-            if (found) {
-                res.redirect('/personal');
-            } else {
-                res.redirect('/login');
-            }
-        }
-    })
+    const { email,username, password } = req.body;
+    // connection.query(`SELECT email,username,password FROM Registered`
+    // ,function (error, result, fields) {
+    //     if (error) {
+    //         console.error(error);
+    //         res.status(400).send();
+    //         return;
+    //     }else{
+    //         var obj = result;
+
+    //         for(var i=0;i<obj.length;i++){
+    //             if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
+    //                 res.redirect('/personal');
+    //             }
+    //         }
+    //         res.redirect('/login');
+    //     }
+    // })
 
     //Below for testing. Uncommet above to actually use DB
-    // var obj = [
-    //     { "email": "john@gmail.com", "username": "John", "password": "12345" },
-    //     { "email": "kelly@gmail.com", "username": "Kelly", "password": "54321" }
-    // ];
+    var obj = [
+        {"email":"john@gmail.com","username":"John","password":"12345"},
+        {"email":"kelly@gmail.com","username":"Kelly","password":"54321"}
+            ];
 
-    // let found = false;
-    // for (var i = 0; i < obj.length; i++) {
-    //     if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
-    //         req.session.loggedIn = true;
-    //         req.session.username = email;
-    //         found = true;
-    //         break;
-    //         //res.redirect('/personal');
-    //         //console.log('/personal');
-    //     }
-    // }
-    // if (found) {
-    //     res.redirect('/personal');
-    // } else {
-    //     res.redirect('/login');
-    // }
+    for(var i=0;i<obj.length;i++){
+        if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
+            res.redirect('/personal');
+            //console.log('/personal');
+        }
+    }
+    res.redirect('/login');
 })
 //get method personal
-app.get('/personal', (req, res) => {
-    if (req.session.loggedIn) {
-        connection.query("SELECT * FROM Books", function (err, books, fields) {
-            if (err) throw err;
-            //res.render('home', { books })
-            res.render('personal', { 'email': req.session.email,'username':req.session.username,books });
-        });
-    } else {
-        res.redirect('/home');
-    }
+app.get('/personal',(req,res)=>{
+    res.render('personal');
+
 })
 //get method to render the form to signup
 app.get('/signUp', (req, res) => {
     res.render('signup');
 })
 
+//confirm book reservation page
+app.get('/confirmReservation', (req, res) => {
+    //const where = `ID = '${req.query.ID}'`; //need to be updated when it's connected to the API
+    const book = {
+        book_name: 'Harry Potter',
+        author: 'JK',
+        rating: 4.5,
+        status: 'Available'
+    }
+    res.render('confirmReservation', {book: book});
+})
+
 //post method to add books
 app.post('/api/signUp', (req, res) => {
-    const { email, username, password } = req.body;
+    const { email,username, password } = req.body;
     connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
-        , [
-            email,
-            username,
-            password
-        ], function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(400).send();
-                return;
-            }
-        })
-    console.log(username + password + email);
-    req.session.loggedIn = true;
-    req.session.email = email;
-    req.session.username = username;
+    ,[
+        email,
+        username,
+        password
+    ], function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    console.log(username+password+email);
     res.redirect('/personal');
 })
 
-//get method to render the form to signup
-app.get('/logout', (req, res) => {
-    req.session.loggedIn = false;
-    req.session.email = "";
-    res.redirect('/');
-})
-app.get('/admin', (req, res) => {
-    res.render('admin');
-})
+
 connection.connect((err) => {
     if (err) {
         console.error('error cannot conenct to db');
