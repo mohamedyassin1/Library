@@ -21,7 +21,7 @@
 
                     <div class="col-md-6">
                         <p class="bookInfo"><strong>Title: </strong> <%=book.book_name%> </p>
-                        <p class="bookInfo"><strong>Author:</strong> 
+                        <p class="bookInfo"><strong>Author(s):</strong> 
                             <%book.author.forEach((element, index) => {%>
                             <%=element.Fname + " " + element.Lname%>
                             <% if(index < book.author.length-1) { %>
