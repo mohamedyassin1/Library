@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
+
 const path = require('path');
 const mysql = require('mysql');
 const session = require('express-session');
+
 const connection = mysql.createConnection({
     host: '34.83.176.15',
     user: 'root',
@@ -11,12 +13,18 @@ const connection = mysql.createConnection({
 });
 const res = require('express/lib/response');
 const { request } = require('http');
+
 app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka read HTML form data)
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
+    // secret: 'secret',
+    // resave: true,
+    // saveUninitialized: true
+    secret: 'secretforseng401librarywebapplication',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {maxAge: 1000 * 60 * 60},//60 minutes
+    rolling: true
 }));
 
 //public
@@ -27,8 +35,19 @@ app.use(session({
 app.set('view engine', 'ejs'); //using the ejs view engine, so we can do dynamic HTML templating.
 app.set('views', path.join(__dirname, '/views')); //Add this so that we can run our app from any directory.
 
+app.use((req, res, next) => {
+    //console.log('Middleware auth called');
+    if(req.session.loggedIn) res.locals.logged = true;
+    else res.locals.logged = false;
+    next();
+})
+
 //Home Page
 app.get('/', (req, res) => {
+    if(req.session.loggedIn){
+        res.redirect('/personal');
+        return;
+    }
     connection.query("SELECT * FROM Books", function (err, books, fields) {
         if (err) throw err;
         res.render('home', { books })
@@ -43,25 +62,36 @@ app.get('/search', (req, res) => {
 //Book Detail page
 app.get('/api/bookDetail', (req, res) => {
     const where = `ID = '${req.query.ID}'`;
-    connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
-        if (err) throw err;
-        connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
+    if(!req.session.loggedIn){
+        connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
             if (err) throw err;
-        res.render('bookDetail', { book: results, comments: commentsResult });
-        })
-    });
+            connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
+                if (err) throw err;
+            res.render('bookDetail', { book: results, comments: commentsResult });
+            })
+        });
+    }
+    else{
+        connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
+            if (err) throw err;
+            connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
+                if (err) throw err;
+            res.render('bookDetailsMember', { book: results, comments: commentsResult, r_email:req.session.email });
+        });
+        });
+    }
 });
 //Book Detail Member page
-app.get('/api/bookDetailMember', (req, res) => {
-    const where = `ID = '${req.query.ID}'`;
-    connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
-        if (err) throw err;
-        connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
-            if (err) throw err;
-        res.render('bookDetailsMember', { book: results, comments: commentsResult,r_email:req.session.email });
-     });
-    });
-});
+// app.get('/api/bookDetailMember', (req, res) => {
+//     const where = `ID = '${req.query.ID}'`;
+//     connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
+//         if (err) throw err;
+//         connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
+//             if (err) throw err;
+//         res.render('bookDetailsMember', { book: results, comments: commentsResult,r_email:req.session.email });
+//      });
+//     });
+// });
 
 //api
 app.get('/api/books', (req, res) => {
@@ -181,7 +211,6 @@ app.get('/api/getBookDetail', (req, res) => {
         // connected!
         res.json(results);
     });
-
 });
 
 
@@ -284,7 +313,7 @@ app.get('/personal', (req, res) => {
             res.render('personal', { 'email': req.session.email,'username':req.session.username,books });
         });
     } else {
-        res.redirect('/home');
+        res.redirect('/');
     }
 })
 //get method to render the form to signup
@@ -318,6 +347,7 @@ app.post('/api/signUp', (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.loggedIn = false;
     req.session.email = "";
+    req.session.destroy();
     res.redirect('/');
 })
 app.get('/admin', (req, res) => {

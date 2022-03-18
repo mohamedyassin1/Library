@@ -74,7 +74,9 @@
                                         <% for (let b of books) { %>
                                             <li class="list-group-item">
                                                 <%= b.Name %> Average Rating: <%= b.AverageRating %>
-                                                        <a href="/api/bookdetailMember?ID=<%= b.ID %>"
+                                                        <!-- <a href="/api/bookdetailMember?ID=<%= b.ID %>"
+                                                            class="stretched-link"></a> -->
+                                                        <a href="/api/bookdetail?ID=<%= b.ID %>"
                                                             class="stretched-link"></a>
                                             </li>
                                             <% } %>
@@ -97,7 +99,8 @@
                                                 Status: <%= b.Status %>
                                             </li>
                                         </ul>
-                                        <a href="/api/bookdetailMember?ID=<%= b.ID %>" class="stretched-link"></a>
+                                        <!-- <a href="/api/bookdetailMember?ID=<%= b.ID %>" class="stretched-link"></a> -->
+                                        <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"></a>
                                     </div>
                                 </div>
                             <%#</div>%>
