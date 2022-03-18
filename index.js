@@ -151,11 +151,12 @@ app.get('/api/books/:bookID', (req, res) => {
 app.post('/api/AddRatingForABook', (req, res) => {
 
     const { email, bookrate, bid } = req.body;
-    connection.query(`INSERT INTO librarydb.Rating (username, RatingStar, BookID) VALUES (?,?,?)`
+    connection.query(`INSERT INTO librarydb.Rating (username, RatingStar, BookID) VALUES (?,?,?) ON DUPLICATE KEY UPDATE RatingStar=?`
         , [
             email,
             bookrate,
-            bid
+            bid,
+            bookrate
         ], function (error, results, fields) {
             if (error) {
                 console.error(error);
