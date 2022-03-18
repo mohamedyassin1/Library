@@ -9,7 +9,7 @@
 <%- include('partials/navbar.ejs') %>
 <body>
     <div style="padding: 2% 20% 0 20%;">
-        <h1 style="text-align:center">Book Checkout for <%=book.book_name%></h1>
+        <h1 style="text-align:center">Book Checkout for <%=book.Name%></h1>
         <section>
             <div class="container" style="padding-top: 10%;">
                 <div class="row">
@@ -20,28 +20,28 @@
                     </div>
 
                     <div class="col-md-6">
-                        <p class="bookInfo"><strong>Title: </strong> <%=book.book_name%> </p>
+                        <p class="bookInfo"><strong>Title: </strong> <%=book.Name%> </p>
                         <p class="bookInfo"><strong>Author(s):</strong> 
-                            <%book.author.forEach((element, index) => {%>
+                            <%book.authors.forEach((element, index) => {%>
                             <%=element.Fname + " " + element.Lname%>
-                            <% if(index < book.author.length-1) { %>
+                            <% if(index < book.authors.length-1) { %>
                                 <%=", "%>
                             <% } %>
                             <% }); %>
                         </p>
 
-                        <span style="display: grid; grid-template-columns: 85px min-content;">
-                            <p class="bookInfo"><strong>Rating:</strong>  <%=book.rating%> </p>
+                        <span style="display: grid; grid-template-columns: 92px min-content;">
+                            <p class="bookInfo"><strong>Rating:</strong>  <%=book.AverageRating.toFixed(2)%> </p>
                             <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/>
                         </span>
                         
                         <p class="bookInfo"><strong>Status: </strong>
-                        <% if(book.status == 'Available'){ %>
+                        <% if(book.Status == 'Active'){ %>
                             <span style="color:green">
                         <% } else{ %>
                             <span style="color:red">
                         <% } %>
-                            <%=book.status%> </span></p>
+                            <%=book.Status%> </span></p>
                     </div>
                 </div>
             </div>

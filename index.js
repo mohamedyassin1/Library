@@ -325,14 +325,23 @@ app.get('/admin', (req, res) => {
 })
 
 //confirm book reservation page
-app.get('/confirmReservation', (req, res) => {
-    //const where = `ID = '${req.query.ID}'`; //need to be updated when it's connected to the API
-    const book = {
-        book_name: 'Harry Potter',
-        author: [{Fname: "JK", Lname: "Rowling"}, {Fname: "Tester", Lname: "Juan"}],
-        rating: 4.5,
-        status: 'Available'
-    }
+app.get('/confirmReservation', async (req, res) => {
+    const fetch = require('node-fetch');
+    //'http://localhost:3000/api/books/1'
+
+    // var book = {
+    //     book_name: "",
+    //     author: [{Fname: "JK", Lname: "Rowling"}, {Fname: "Tester", Lname: "Juan"}],
+    //     rating: 4.5,
+    //     status: 'Available'
+    // }
+    
+    const url = 'http://localhost:3000/api/books/' + req.query.ID;
+    // console.log(url)
+    const response = await fetch(url);
+    
+    const book = await response.json();
+
     res.render('confirmReservation', {book: book});
 })
 
