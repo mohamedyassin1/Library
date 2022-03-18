@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Reservation</title>
+</head>
+<%- include('partials/navbar.ejs') %>
+<body>
+    <div style="padding: 2% 20% 0 20%;">
+        <h1 style="text-align:center">Book Checkout for <%=book.Name%></h1>
+        <section>
+            <div class="container" style="padding-top: 10%;">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <img width="200"
+                        src="https://i.fbcd.co/products/resized/resized-750-500/ae2d64e634f5beaa6f0e867d529ece28f0504e9e24fc4d5e0d6fd21f0a05df7f.jpg" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <p class="bookInfo"><strong>Title: </strong> <%=book.Name%> </p>
+                        <p class="bookInfo"><strong>Author(s):</strong> 
+                            <%book.authors.forEach((element, index) => {%>
+                            <%=element.Fname + " " + element.Lname%>
+                            <% if(index < book.authors.length-1) { %>
+                                <%=", "%>
+                            <% } %>
+                            <% }); %>
+                        </p>
+
+                        <span style="display: grid; grid-template-columns: 92px min-content;">
+                            <p class="bookInfo"><strong>Rating:</strong>  <%=book.AverageRating.toFixed(2)%> </p>
+                            <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/>
+                        </span>
+                        
+                        <p class="bookInfo"><strong>Status: </strong>
+                        <% if(book.Status == 'Active'){ %>
+                            <span style="color:green">
+                        <% } else{ %>
+                            <span style="color:red">
+                        <% } %>
+                            <%=book.Status%> </span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="d-flex justify-content-center" style="padding-top: 10%">
+                
+                <!-- Need to update for redirection. Need book id? -->
+                <a href="#" class="btn btn-secondary" style="margin-right: 0.5%;">Cancel</a>
+                <a href="/views/reservationSuccessful.ejs" class="btn btn-success" style="margin-left: 0.5%;">Reserve</a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
