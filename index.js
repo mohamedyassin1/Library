@@ -218,6 +218,7 @@ app.get('/api/getBookDetail', (req, res) => {
 app.get('/addBookForm', (req, res) => {
     res.render('addBookForm');
 })
+
 //post method to add books
 app.post('/api/books', (req, res) => {
     const { name, status } = req.body;
@@ -353,6 +354,29 @@ app.get('/logout', (req, res) => {
 app.get('/admin', (req, res) => {
     res.render('admin');
 })
+
+//confirm book reservation page
+app.get('/confirmReservation', async (req, res) => {
+    const fetch = require('node-fetch');
+    //'http://localhost:3000/api/books/1'
+
+    // var book = {
+    //     book_name: "",
+    //     author: [{Fname: "JK", Lname: "Rowling"}, {Fname: "Tester", Lname: "Juan"}],
+    //     rating: 4.5,
+    //     status: 'Available'
+    // }
+    
+    const url = 'http://localhost:3000/api/books/' + req.query.ID;
+    // console.log(url)
+    const response = await fetch(url);
+    
+    const book = await response.json();
+
+    res.render('confirmReservation', {book: book});
+})
+
+
 connection.connect((err) => {
     if (err) {
         console.error('error cannot conenct to db');
@@ -365,5 +389,3 @@ connection.connect((err) => {
 app.listen(3000, () => {
     console.log("listening on port 3000");
 });
-
-
