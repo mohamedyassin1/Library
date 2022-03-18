@@ -189,6 +189,7 @@ app.get('/api/getBookDetail', (req, res) => {
 app.get('/addBookForm', (req, res) => {
     res.render('addBookForm');
 })
+
 //post method to add books
 app.post('/api/books', (req, res) => {
     const { name, status } = req.body;
