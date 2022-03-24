@@ -377,6 +377,46 @@ app.get('/confirmReservation', async (req, res) => {
     res.render('confirmReservation', {book: book});
 })
 
+//update book reservation page
+app.post('/api/updateReservation', (req, res) => {
+    // const url = 'http://localhost:3000/api/books/' + req.query.ID;
+    // // console.log(url)
+    // const response = await fetch(url);
+    // const book = await response.json();
+//     UPDATE table_name
+// SET column1 = value1, column2 = value2, ...
+// WHERE condition;
+const { bid } = req.body;
+const status = "Not Available";
+
+    connection.query(`UPDATE Books SET Status=? WHERE ID=?`
+    , [
+        status,
+        bid
+    ], function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    connection.query(`INSERT INTO Borrowing (BID, R_email) VALUES (?,?)`
+    , [
+        bid,
+        req.session.email
+    ], function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+
+    // console.log(url)
+
+    res.render('reservationSuccessful');
+})
+
 
 connection.connect((err) => {
     if (err) {
