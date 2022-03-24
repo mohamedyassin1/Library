@@ -32,7 +32,10 @@
 
                         <span style="display: grid; grid-template-columns: 92px min-content;">
                             <p class="bookInfo"><strong>Rating:</strong>  <%=book.AverageRating.toFixed(2)%> </p>
-                            <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/>
+                            <% for (var i =1; i <book.AverageRating; i++ ) { %>
+                                <!-- <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/> -->
+                                <p>&#11088;</p>
+                                <% } %>
                         </span>
                         
                         <p class="bookInfo"><strong>Status: </strong>
@@ -51,10 +54,26 @@
             <div class="d-flex justify-content-center" style="padding-top: 10%">
                 
                 <!-- Need to update for redirection. Need book id? -->
-                <a href="#" class="btn btn-secondary" style="margin-right: 0.5%;">Cancel</a>
-                <a href="/views/reservationSuccessful.ejs" class="btn btn-success" style="margin-left: 0.5%;">Reserve</a>
+                <a href="/personal" class="btn btn-secondary" style="margin-right: 0.5%;">Cancel</a>
+                <% if(book.Status == 'Active'){ %>
+                    <div class="reserveBook">
+                        <form action="/api/updateReservation" method = "post">
+                            <input type="hidden" name="bid" value="<%=book.ID%>" required/>
+                            <button type="submit" class="btn btn-success">Reserve</button>
+                        </form>
+                    </div>
+                <!-- <a href="/api/updateReservation?ID=<%= book.ID %>" class="btn btn-success" style="margin-left: 0.5%;">Reserve</a> -->
+                <%}else{ %>
+
+                    <button onclick="myFunction()" class="btn btn-danger" style="margin-left: 0.5%;">Cannot Reserve</button>
+                <% } %>
             </div>
         </section>
     </div>
 </body>
+<script>
+    function myFunction() {
+      alert("Unfortunately cannot reserve");
+    }
+</script>
 </html>
