@@ -274,6 +274,7 @@ app.post('/api/borrowing', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('loginForm');
 })
+
 //post method to login
 app.post('/api/login', (req, res) => {
     const { email, username, password } = req.body;
@@ -397,6 +398,34 @@ app.get('/confirmReservation', async (req, res) => {
 
     res.render('confirmReservation', {book: book});
 })
+
+app.put('/api/books/:id', (req, res) => {
+    const {ID, Status} = req.body;
+    //console.log(req.body);
+    if(!ID || !Status){
+        res.status(400).send("must have BID and R_email");
+        return;
+    }
+    else if(ID != req.params.id){
+        res.status(400).send("ID's do not equal each other");
+        return;
+    }
+    connection.query(`UPDATE Books SET Status = ? WHERE ID = ?;`
+        , [
+            Status,
+            ID
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+            else{
+                console.log("GOOOOD!");
+                res.status(200).send();
+            }
+        })
+});
 
 
 connection.connect((err) => {
