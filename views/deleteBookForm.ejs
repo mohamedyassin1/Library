@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Book</title>
+</head>
+<%- include('partials/navbar.ejs') %>
+
+    <body>
+        <div class="container-fluid">
+            <h1 class="display-4 text-center">Delete A Book</h1>
+            <div class="row">
+                <div class="col-sm-4 offset-sm-4 text-center">
+                    <form action="/deleteBook?_method=DELETE" method="post" class="form-inline justify-content-center">
+                        <div class="mb-3">
+                            <label for="books" class="form-label">Select the book you wish to delete ...</label>
+                            <select id="name" placeholder="name" name="name" class="form-control">
+                                <% for (let b of books) { %>
+                                    <option value="<%= b.Name %>">
+                                        <%= b.Name %>
+                                    </option>
+                                    <% } %>
+                            </select>
+                        </div>
+                        <button class="btn btn-danger">Delete Book</button>
+                        <a href="/" class="btn btn-primary">Back to Home</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

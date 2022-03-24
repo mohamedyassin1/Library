@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-
+const methodOverride = require('method-override')
 const path = require('path');
 const mysql = require('mysql');
 const session = require('express-session');
@@ -14,6 +14,7 @@ const connection = mysql.createConnection({
 const res = require('express/lib/response');
 const { request } = require('http');
 
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka read HTML form data)
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.json());
@@ -24,7 +25,7 @@ app.use(session({
     secret: 'secretforseng401librarywebapplication',
     resave: false,
     saveUninitialized: true,
-    cookie: {maxAge: 1000 * 60 * 60},//60 minutes
+    cookie: { maxAge: 1000 * 60 * 60 },//60 minutes
     rolling: true
 }));
 
@@ -38,14 +39,14 @@ app.set('views', path.join(__dirname, '/views')); //Add this so that we can run 
 
 app.use((req, res, next) => {
     //console.log('Middleware auth called');
-    if(req.session.loggedIn) res.locals.logged = true;
+    if (req.session.loggedIn) res.locals.logged = true;
     else res.locals.logged = false;
     next();
 })
 
 //Home Page
 app.get('/', (req, res) => {
-    if(req.session.loggedIn){
+    if (req.session.loggedIn) {
         res.redirect('/personal');
         return;
     }
@@ -63,22 +64,22 @@ app.get('/search', (req, res) => {
 //Book Detail page
 app.get('/api/bookDetail', (req, res) => {
     const where = `ID = '${req.query.ID}'`;
-    if(!req.session.loggedIn){
+    if (!req.session.loggedIn) {
         connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
             if (err) throw err;
-            connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
+            connection.query(`SELECT * FROM Comment WHERE BID=?`, [req.query.ID], function (err, commentsResult, fields) {
                 if (err) throw err;
-            res.render('bookDetail', { book: results, comments: commentsResult });
+                res.render('bookDetail', { book: results, comments: commentsResult });
             })
         });
     }
-    else{
+    else {
         connection.query(`SELECT * FROM Books WHERE ${where}`, function (err, results, fields) {
             if (err) throw err;
-            connection.query(`SELECT * FROM Comment WHERE BID=?`,[req.query.ID], function (err, commentsResult, fields) {
+            connection.query(`SELECT * FROM Comment WHERE BID=?`, [req.query.ID], function (err, commentsResult, fields) {
                 if (err) throw err;
-            res.render('bookDetailsMember', { book: results, comments: commentsResult, r_email:req.session.email });
-        });
+                res.render('bookDetailsMember', { book: results, comments: commentsResult, r_email: req.session.email });
+            });
         });
     }
 });
@@ -166,7 +167,7 @@ app.post('/api/AddRatingForABook', (req, res) => {
             }
         })
 
-        connection.query(`SELECT * FROM Rating WHERE BookID=?`,
+    connection.query(`SELECT * FROM Rating WHERE BookID=?`,
         [
             bid
         ], function (error, results, fields) {
@@ -174,29 +175,29 @@ app.post('/api/AddRatingForABook', (req, res) => {
                 console.error(error);
                 res.status(400).send();
                 return;
-            }else{
-                var count=0;
+            } else {
+                var count = 0;
                 var obj = results;
-                for(var i=0;i<obj.length;i++){
-                    count+=obj[i].RatingStar;
+                for (var i = 0; i < obj.length; i++) {
+                    count += obj[i].RatingStar;
                 }
-                
-                var avg = count/obj.length;
+
+                var avg = count / obj.length;
                 console.log(avg);
-            
-            connection.query(`UPDATE Books SET AverageRating = ?,TotalRatingsCount=? WHERE ID=?`,
-            [
-                avg,
-                obj.length,
-                bid
-            ], function (error, results, fields) {
-                if (error) {
-                    console.error(error);
-                    res.status(400).send();
-                    return;
-                }
-            })
-          }
+
+                connection.query(`UPDATE Books SET AverageRating = ?,TotalRatingsCount=? WHERE ID=?`,
+                    [
+                        avg,
+                        obj.length,
+                        bid
+                    ], function (error, results, fields) {
+                        if (error) {
+                            console.error(error);
+                            res.status(400).send();
+                            return;
+                        }
+                    })
+            }
         })
     //console.log(email + bookrate + bid);
     res.redirect('/personal');
@@ -215,29 +216,9 @@ app.get('/api/getBookDetail', (req, res) => {
     });
 });
 
-
-//get method to render the form to add a book
-app.get('/addBookForm', (req, res) => {
-    res.render('addBookForm');
-})
-
-//post method to add books
-app.post('/api/books', (req, res) => {
-    const { name, status } = req.body;
-    var sql = `INSERT INTO Books (Name, Status) VALUES ('${name}', '${status}')`;
-    connection.query(sql, function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-    })
-    res.redirect('/');
-})
-
 //post method to submit comment
 app.post('/api/submitComment', (req, res) => {
-    const {comments,bid,email} = req.body;
+    const { comments, bid, email } = req.body;
     var sql = `INSERT INTO Comment (BID, Comment, R_email) VALUES ('${bid}', '${comments}', '${email}')`;
     connection.query(sql, function (error, results, fields) {
         if (error) {
@@ -252,9 +233,9 @@ app.post('/api/submitComment', (req, res) => {
 
 //add borrowing table to db
 app.post('/api/borrowing', (req, res) => {
-    const {BID, R_email} = req.body;
+    const { BID, R_email } = req.body;
     //console.log(req.body);
-    if(!BID || !R_email){
+    if (!BID || !R_email) {
         res.status(400).send("must have BID and R_email");
         return;
     }
@@ -278,31 +259,31 @@ app.get('/login', (req, res) => {
 app.post('/api/login', (req, res) => {
     const { email, username, password } = req.body;
     connection.query(`SELECT email,username,password FROM Registered`
-    ,function (error, result, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }else{
-            var obj = result;
-            let found=false;
-            for(var i=0;i<obj.length;i++){
-                if(obj[i].email==email && obj[i].username==username && obj[i].password==password){
-                    //res.redirect('/personal');
-                    req.session.loggedIn = true;
-                    req.session.email = email;
-                    req.session.username=username;
-                    found = true;
-                    break;
+        , function (error, result, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            } else {
+                var obj = result;
+                let found = false;
+                for (var i = 0; i < obj.length; i++) {
+                    if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
+                        //res.redirect('/personal');
+                        req.session.loggedIn = true;
+                        req.session.email = email;
+                        req.session.username = username;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    res.redirect('/personal');
+                } else {
+                    res.redirect('/login');
                 }
             }
-            if (found) {
-                res.redirect('/personal');
-            } else {
-                res.redirect('/login');
-            }
-        }
-    })
+        })
 
     //Below for testing. Uncommet above to actually use DB
     // var obj = [
@@ -333,7 +314,7 @@ app.get('/personal', (req, res) => {
         connection.query("SELECT * FROM Books", function (err, books, fields) {
             if (err) throw err;
             //res.render('home', { books })
-            res.render('personal', { 'email': req.session.email,'username':req.session.username,books });
+            res.render('personal', { 'email': req.session.email, 'username': req.session.username, books });
         });
     } else {
         res.redirect('/');
@@ -373,9 +354,6 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 })
-app.get('/admin', (req, res) => {
-    res.render('admin');
-})
 
 //confirm book reservation page
 app.get('/confirmReservation', async (req, res) => {
@@ -388,14 +366,14 @@ app.get('/confirmReservation', async (req, res) => {
     //     rating: 4.5,
     //     status: 'Available'
     // }
-    
+
     const url = 'http://localhost:3000/api/books/' + req.query.ID;
     // console.log(url)
     const response = await fetch(url);
-    
+
     const book = await response.json();
 
-    res.render('confirmReservation', {book: book});
+    res.render('confirmReservation', { book: book });
 })
 
 //update book reservation page
@@ -404,41 +382,96 @@ app.post('/api/updateReservation', (req, res) => {
     // // console.log(url)
     // const response = await fetch(url);
     // const book = await response.json();
-//     UPDATE table_name
-// SET column1 = value1, column2 = value2, ...
-// WHERE condition;
-const { bid } = req.body;
-const status = "Not Available";
+    //     UPDATE table_name
+    // SET column1 = value1, column2 = value2, ...
+    // WHERE condition;
+    const { bid } = req.body;
+    const status = "Not Available";
 
     connection.query(`UPDATE Books SET Status=? WHERE ID=?`
-    , [
-        status,
-        bid
-    ], function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-    })
+        , [
+            status,
+            bid
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+        })
     connection.query(`INSERT INTO Borrowing (BID, R_email) VALUES (?,?)`
-    , [
-        bid,
-        req.session.email
-    ], function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-    })
+        , [
+            bid,
+            req.session.email
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+        })
 
     // console.log(url)
 
     res.render('reservationSuccessful');
 })
 
-
+app.get('/admin', (req, res) => {
+    res.render('admin');
+})
+//get method to render the form to add a book
+app.get('/addBookForm', (req, res) => {
+    res.render('addBookForm');
+})
+//post method to add books
+app.post('/api/books', (req, res) => {
+    const { name, status } = req.body;
+    var sql = `INSERT INTO Books (Name, Status) VALUES ('${name}', '${status}')`;
+    connection.query(sql, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    res.redirect('/');
+})
+app.get('/updateBookForm', (req, res) => {
+    connection.query("SELECT * FROM Books", function (err, books, fields) {
+        if (err) throw err;
+        res.render('updateBookForm', { books })
+    });
+})
+app.patch('/updateBookForm', (req, res) => {
+    const { name, status } = req.body;
+    var sql = `UPDATE Books SET Status =  "${status}" WHERE Name = "${name}"`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    res.redirect('/');
+})
+app.get('/deleteBookForm', (req, res) => {
+    connection.query("SELECT * FROM Books", function (err, books, fields) {
+        if (err) throw err;
+        res.render('deleteBookForm', { books })
+    });
+})
+app.delete('/deleteBook', (req, res) => {
+    const { name } = req.body;
+    var sql = `DELETE FROM Books WHERE Name =  "${name}"`;
+    connection.query(sql, function (error, results) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+    })
+    res.redirect('/');
+})
 connection.connect((err) => {
     if (err) {
         console.error('error cannot conenct to db');
