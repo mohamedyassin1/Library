@@ -16,6 +16,7 @@ const { request } = require('http');
 
 app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka read HTML form data)
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.json());
 app.use(session({
     // secret: 'secret',
     // resave: true,
@@ -248,6 +249,26 @@ app.post('/api/submitComment', (req, res) => {
     //console.log(email+bid+comments);
     res.redirect('/personal');
 })
+
+//add borrowing table to db
+app.post('/api/borrowing', (req, res) => {
+    const {BID, R_email} = req.body;
+    //console.log(req.body);
+    if(!BID || !R_email){
+        res.status(400).send("must have BID and R_email");
+        return;
+    }
+    var sql = `INSERT INTO Borrowing (BID, R_email) VALUES ('${BID}', '${R_email}')`;
+    connection.query(sql, function (error, results, fields) {
+        if (error) {
+            console.error(error);
+            res.status(400).send();
+            return;
+        }
+        res.json(results);
+    });
+
+});
 
 //get method to render the form to login
 app.get('/login', (req, res) => {
