@@ -425,8 +425,8 @@ app.get('/addBookForm', (req, res) => {
 })
 //post method to add books
 app.post('/api/books', (req, res) => {
-    const { name, status } = req.body;
-    var sql = `INSERT INTO Books (Name, Status) VALUES ('${name}', '${status}')`;
+    const { name, genre, status } = req.body;
+    var sql = `INSERT INTO Books (Name, Genre, Status) VALUES ('${name}', '${genre}', '${status}')`;
     connection.query(sql, function (error, results, fields) {
         if (error) {
             console.error(error);
