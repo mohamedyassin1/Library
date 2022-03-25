@@ -40,6 +40,15 @@
             <div class=" row">
                 <div class="col-4 text-dark text-center">
                     <div class="col-12">
+                        <h4 class="display-6">Genre Filter</h4>
+                        <form action="/api/genreFilter" method="post">
+                            <label for="genre">Genre</label>
+                            <select name="genre" id="genre">
+                              <option value="fiction">Fiction</option>
+                              <option value="mystery">Mystery</option>
+                            </select>
+                            <input type="submit" value="Filter" />
+                        </form>
                         <h4 class="display-6">Top Rated Books</h4>
                         <% books.sort(function(a, b) { %>
                             <% return b.AverageRating - a.AverageRating ; %>
