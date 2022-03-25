@@ -443,10 +443,6 @@ app.get('/reservationSuccessful', (req, res) => {
     res.render('reservationSuccessful');
 });
 
-
-    res.render('reservationSuccessful');
-})
-
 app.get('/admin', (req, res) => {
     res.render('admin');
 })
