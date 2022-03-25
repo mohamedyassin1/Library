@@ -280,7 +280,39 @@ app.post('/api/login', (req, res) => {
                 if (found) {
                     res.redirect('/personal');
                 } else {
-                    res.redirect('/login');
+                    connection.query(`SELECT email,username,password FROM Admin`
+                        , function (error, result, fields) {
+                            if (error) {
+
+                                console.error(error);
+                                res.status(400).send();
+                                return;
+                            } else {
+
+                                var obj = result;
+                                let found = false;
+                                for (var i = 0; i < obj.length; i++) {
+                                    //console.log(obj[i].email + email + obj[i].username + username + obj[i].password + password)
+                                    if (obj[i].email == username && obj[i].username == email && obj[i].password == password) {
+                                        //res.redirect('/personal');
+                                        console.log('dsad2')
+                                        req.session.loggedIn = true;
+                                        req.session.email = email;
+                                        req.session.username = username;
+                                        req.session.admin = true;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (found) {
+                                    console.log('dsad')
+                                    res.redirect('/admin');
+                                } else {
+
+                                    res.redirect('/login');
+                                }
+                            }
+                        })
                 }
             }
         })
