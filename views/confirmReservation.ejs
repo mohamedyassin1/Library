@@ -71,7 +71,10 @@
 
                         <span style="display: grid; grid-template-columns: 92px min-content;">
                             <p class="bookInfo"><strong>Rating:</strong>  <%=book.AverageRating.toFixed(2)%> </p>
-                            <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/>
+                            <% for (var i =1; i <book.AverageRating; i++ ) { %>
+                                <!-- <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/> -->
+                                <p>&#11088;</p>
+                                <% } %>
                         </span>
                         
                         <p class="bookInfo"><strong>Status: </strong>
@@ -85,7 +88,6 @@
                 </div>
             </div>
         </section>
-
         <% if(book.Status == 'Active'){ %>
             <section>
                 <div class="d-flex justify-content-center" style="padding-top: 10%">
@@ -109,6 +111,12 @@
                 <p><%= user %></p>
             </section>
         <% } %>
+
     </div>
 </body>
+<script>
+    function myFunction() {
+      alert("Unfortunately cannot reserve");
+    }
+</script>
 </html>
