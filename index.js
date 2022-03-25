@@ -395,8 +395,9 @@ app.get('/confirmReservation', async (req, res) => {
     const response = await fetch(url);
     
     const book = await response.json();
+    // console.log(book);
 
-    res.render('confirmReservation', {book: book});
+    res.render('confirmReservation', {book: book, user: req.session.email, loggedIn: req.session.loggedIn});
 })
 
 app.put('/api/books/:id', (req, res) => {
@@ -421,12 +422,16 @@ app.put('/api/books/:id', (req, res) => {
                 return;
             }
             else{
-                console.log("GOOOOD!");
+                // console.log("GOOOOD!");
                 res.status(200).send();
             }
         })
 });
 
+
+app.get('/reservationSuccessful', (req, res) => {
+    res.render('reservationSuccessful');
+});
 
 connection.connect((err) => {
     if (err) {

@@ -6,8 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirm Reservation</title>
     <script>
-        let d = new Date();
-        alert("Today's date is " + d);
+        // const fetch = require('node-fetch');
+        var username = '<%- user %>';
+        console.log(username);
+        function myFunction(){
+            // Simulate a mouse click:
+            window.location.href = "http://www.w3schools.com";
+        }
+        const reserveAction = async (bid) => {
+            const data = {ID: bid, Status: 'Unavailable'};
+            const url = 'http://localhost:3000/api/books/' + bid;
+            const response = await fetch(url, {
+                method: 'PUT',
+                body: JSON.stringify(data), // string or object
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+
+            const data2 = {BID: bid, R_email: username};
+            console.log(data2);
+            const url2 = 'http://localhost:3000/api/borrowing';
+            const response2 = await fetch(url2, {
+                method: 'POST',
+                body: JSON.stringify(data2), // string or object
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+            window.location.href = "http://localhost:3000/reservationSuccessful";
+        }
+
     </script>
 </head>
 <%- include('partials/navbar.ejs') %>
@@ -51,14 +86,29 @@
             </div>
         </section>
 
-        <section>
-            <div class="d-flex justify-content-center" style="padding-top: 10%">
-                
-                <!-- Need to update for redirection. Need book id? -->
-                <a href="#" class="btn btn-secondary" style="margin-right: 0.5%;">Cancel</a>
-                <a href="/views/reservationSuccessful.ejs" class="btn btn-success" style="margin-left: 0.5%;">Reserve</a>
-            </div>
-        </section>
+        <% if(book.Status == 'Active'){ %>
+            <section>
+                <div class="d-flex justify-content-center" style="padding-top: 10%">
+                    
+                    <!-- Need to update for redirection. Need book id? -->
+                    <a href="javascript:void(0);" class="btn btn-secondary" style="margin-right: 0.5%;" onclick="history.back()">Back</a>
+                    <a href="javascript:void(0);" class="btn btn-success" style="margin-right: 0.5%;" onclick="reserveAction('<%=book.ID%>')">Reserve</a>
+                </div>
+            </section>
+        <% } else{ %>
+            <section>
+                <div class="d-flex justify-content-center" style="padding-top: 5%">
+                    <p>This book is unavailable<br></p>
+                    <!-- Need to update for redirection. Need book id? -->
+                </div>
+                <div class="d-flex justify-content-center">
+                    <!-- Need to update for redirection. Need book id? -->
+                    <a href="javascript:void(0);" class="btn btn-secondary" style="margin-right: 0.5%;" onclick="history.back()">Back</a>
+                    <!-- <a href="#" class="btn btn-secondary" style="margin-right: 0.5%;" onclick="javascript:goBack()">Back</a> -->
+                </div>
+                <p><%= user %></p>
+            </section>
+        <% } %>
     </div>
 </body>
 </html>
