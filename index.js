@@ -255,6 +255,7 @@ app.post('/api/borrowing', (req, res) => {
 app.get('/login', (req, res) => {
     res.render('loginForm');
 })
+
 //post method to login
 app.post('/api/login', (req, res) => {
     const { email, username, password } = req.body;
@@ -404,49 +405,43 @@ app.get('/confirmReservation', async (req, res) => {
     const response = await fetch(url);
 
     const book = await response.json();
+    // console.log(book);
 
-    res.render('confirmReservation', { book: book });
+    res.render('confirmReservation', {book: book, user: req.session.email, loggedIn: req.session.loggedIn});
 })
 
-//update book reservation page
-app.post('/api/updateReservation', (req, res) => {
-    // const url = 'http://localhost:3000/api/books/' + req.query.ID;
-    // // console.log(url)
-    // const response = await fetch(url);
-    // const book = await response.json();
-    //     UPDATE table_name
-    // SET column1 = value1, column2 = value2, ...
-    // WHERE condition;
-    const { bid } = req.body;
-    const status = "Not Available";
-
-    connection.query(`UPDATE Books SET Status=? WHERE ID=?`
+app.put('/api/books/:id', (req, res) => {
+    const {ID, Status} = req.body;
+    //console.log(req.body);
+    if(!ID || !Status){
+        res.status(400).send("must have BID and R_email");
+        return;
+    }
+    else if(ID != req.params.id){
+        res.status(400).send("ID's do not equal each other");
+        return;
+    }
+    connection.query(`UPDATE Books SET Status = ? WHERE ID = ?;`
         , [
-            status,
-            bid
+            Status,
+            ID
         ], function (error, results, fields) {
             if (error) {
                 console.error(error);
                 res.status(400).send();
                 return;
             }
-        })
-    connection.query(`INSERT INTO Borrowing (BID, R_email) VALUES (?,?)`
-        , [
-            bid,
-            req.session.email
-        ], function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(400).send();
-                return;
+            else{
+                // console.log("GOOOOD!");
+                res.status(200).send();
             }
         })
+});
 
-    // console.log(url)
 
+app.get('/reservationSuccessful', (req, res) => {
     res.render('reservationSuccessful');
-})
+});
 
 app.get('/admin', (req, res) => {
     res.render('admin');
