@@ -293,7 +293,7 @@ app.post('/api/login', (req, res) => {
                                 let found = false;
                                 for (var i = 0; i < obj.length; i++) {
                                     //console.log(obj[i].email + email + obj[i].username + username + obj[i].password + password)
-                                    if (obj[i].email == username && obj[i].username == email && obj[i].password == password) {
+                                    if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
                                         //res.redirect('/personal');
                                         console.log('dsad2')
                                         req.session.loggedIn = true;
