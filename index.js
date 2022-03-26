@@ -502,15 +502,42 @@ app.delete('/deleteBook', (req, res) => {
     })
     res.redirect('/');
 })
+//add borrowing table to db
+app.post('/api/genreFilter', (req, res) => {
+    const { genre } = req.body;
+    //console.log(genre);
+    connection.query(`SELECT * FROM Books WHERE Genre= '${genre}' `, function (err, books, fields) {
+        if (err) throw err;
+        res.render('home', { books })
+    });
+    // if (!BID || !R_email) {
+    //     res.status(400).send("must have BID and R_email");
+    //     return;
+    // }
+    // var sql = `INSERT INTO Borrowing (BID, R_email) VALUES ('${BID}', '${R_email}')`;
+    // connection.query(sql, function (error, results, fields) {
+    //     if (error) {
+    //         console.error(error);
+    //         res.status(400).send();
+    //         return;
+    //     }
+    //     res.json(results);
+    // });
+
+});
+
 connection.connect((err) => {
     if (err) {
         console.error('error cannot conenct to db');
         return;
     }
     console.log('connected to db');
+    app.emit("dbStarted");
 });
 
 //Listening for requests
 app.listen(3000, () => {
     console.log("listening on port 3000");
 });
+
+module.exports = {app, connection};

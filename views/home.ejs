@@ -40,6 +40,24 @@
             <div class=" row">
                 <div class="col-4 text-dark text-center">
                     <div class="col-12">
+                        <h4 class="display-6">Genre Filter</h4>
+                        <form action="/api/genreFilter" method="post">
+                            <label for="genre">Genre</label>
+                            <select name="genre" id="genre">
+                                <option value="none" selected disabled hidden>Select a Genre</option>
+                                <option value="Action">Action</option>
+                                <option value="Adventure">Adventure</option>
+                                <option value="Mystery">Mystery</option>
+                                <option value="Comedy">Comedy</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Fantasy">Fantasy</option>
+                                <option value="Science Fiction">Science Fiction</option>
+                                <option value="History">History</option>
+                                <option value="Horror">Horror</option>
+                                <option value="Manga">Manga</option>
+                            </select>
+                            <input type="submit" value="Filter" />
+                        </form>
                         <h4 class="display-6">Top Rated Books</h4>
                         <% books.sort(function(a, b) { %>
                             <% return b.AverageRating - a.AverageRating ; %>
