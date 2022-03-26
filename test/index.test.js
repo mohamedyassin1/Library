@@ -76,6 +76,31 @@ describe('index.js test', () => {
     
   });
 
+  //test post ('/api/borrowing/') with no values
+  it('post /api/borrowing endpoint with no values', (done) => {
+    chai.request(app)
+    .post('/api/borrowing')
+    .end((err, res) => {
+      expect(res).to.have.status(400);
+      done();
+          
+    });
+    
+  });
+
+  //test post ('/api/borrowing/') with invalid values
+  it('post /api/borrowing endpoint with no values', (done) => {
+    chai.request(app)
+    .post('/api/borrowing')
+    .send({BID: 123, R_email: 'notAValidEmail@email.ca'})
+    .end((err, res) => {
+      expect(res).to.have.status(400);
+      done();
+          
+    });
+    
+  });
+
 
 
 });
