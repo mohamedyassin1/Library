@@ -128,7 +128,7 @@ app.get('/api/books/:bookID', (req, res) => {
                 return;
             }
             book.authors = results;
-            console.log(book.authors);
+            //console.log(book.authors);
             res.json(book);
         });
         //res.json(results);

@@ -16,6 +16,7 @@ before(function (done) {
 
 //function beginTest(){
 describe('index.js test', () => {
+  //test get('/')
   it('get / endpoint', (done) => {
     chai.request(app)
     .get('/')
@@ -26,6 +27,7 @@ describe('index.js test', () => {
     
   });
 
+  //test get ('/api/books/')
   it('get /api/books endpoint', (done) => {
     chai.request(app)
     .get('/api/books')
@@ -38,6 +40,7 @@ describe('index.js test', () => {
     
   });
 
+  //test get ('api/books/bookID')
   it('get /api/books/:ID endpoint with ID = 1', (done) => {
     chai.request(app)
     .get('/api/books/1')
@@ -48,6 +51,32 @@ describe('index.js test', () => {
     });
     
   });
+
+  //test get ('/search')
+  it('get /search endpoint', (done) => {
+    chai.request(app)
+    .get('/search')
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();
+    });
+    
+  });
+
+  //test get ('/api/books/') with query params
+  it('get /api/books endpoint with keyword = "the"', (done) => {
+    chai.request(app)
+    .get('/api/books')
+    .query({keyword: 'the'})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();
+          
+    });
+    
+  });
+
+
 
 });
 //}
