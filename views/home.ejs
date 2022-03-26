@@ -44,16 +44,17 @@
                         <form action="/api/genreFilter" method="post">
                             <label for="genre">Genre</label>
                             <select name="genre" id="genre">
-                                <option value="fiction">Action</option>
-                                <option value="mystery">Adventure</option>
-                                <option value="mystery">Mystery</option>
-                                <option value="mystery">Comedy</option>
-                                <option value="mystery">Romance</option>
-                                <option value="mystery">Fantasy</option>
-                                <option value="mystery">Science Fiction</option>
-                                <option value="mystery">History</option>
-                                <option value="mystery">Horror</option>
-                                <option value="mystery">Manga</option>
+                                <option value="none" selected disabled hidden>Select a Genre</option>
+                                <option value="Action">Action</option>
+                                <option value="Adventure">Adventure</option>
+                                <option value="Mystery">Mystery</option>
+                                <option value="Comedy">Comedy</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Fantasy">Fantasy</option>
+                                <option value="Science Fiction">Science Fiction</option>
+                                <option value="History">History</option>
+                                <option value="Horror">Horror</option>
+                                <option value="Manga">Manga</option>
                             </select>
                             <input type="submit" value="Filter" />
                         </form>
