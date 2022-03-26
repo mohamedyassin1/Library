@@ -407,17 +407,17 @@ app.get('/confirmReservation', async (req, res) => {
     const book = await response.json();
     // console.log(book);
 
-    res.render('confirmReservation', {book: book, user: req.session.email, loggedIn: req.session.loggedIn});
+    res.render('confirmReservation', { book: book, user: req.session.email, loggedIn: req.session.loggedIn });
 })
 
 app.put('/api/books/:id', (req, res) => {
-    const {ID, Status} = req.body;
+    const { ID, Status } = req.body;
     //console.log(req.body);
-    if(!ID || !Status){
+    if (!ID || !Status) {
         res.status(400).send("must have BID and R_email");
         return;
     }
-    else if(ID != req.params.id){
+    else if (ID != req.params.id) {
         res.status(400).send("ID's do not equal each other");
         return;
     }
@@ -431,7 +431,7 @@ app.put('/api/books/:id', (req, res) => {
                 res.status(400).send();
                 return;
             }
-            else{
+            else {
                 // console.log("GOOOOD!");
                 res.status(200).send();
             }
@@ -444,7 +444,10 @@ app.get('/reservationSuccessful', (req, res) => {
 });
 
 app.get('/admin', (req, res) => {
-    res.render('admin');
+    if (req.session.loggedIn == true)
+        res.render('admin');
+    else
+        res.redirect('/');
 })
 //get method to render the form to add a book
 app.get('/addBookForm', (req, res) => {
