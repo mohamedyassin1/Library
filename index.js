@@ -109,6 +109,7 @@ app.get('/api/books', (req, res) => {
     });
 });
 
+//get information of a book identified by bookID
 app.get('/api/books/:bookID', (req, res) => {
     const where = `ID = '${req.params.bookID}'`;
     connection.query(`SELECT * FROM Books WHERE ${where}`, function (error, results, fields) {

@@ -16,7 +16,7 @@ before(function (done) {
 
 //function beginTest(){
 describe('index.js test', () => {
-  it('get test homepage', (done) => {
+  it('get / endpoint', (done) => {
     chai.request(app)
     .get('/')
     .end((err, res) => {
@@ -26,7 +26,7 @@ describe('index.js test', () => {
     
   });
 
-  it('get test homepage', (done) => {
+  it('get /api/books endpoint', (done) => {
     chai.request(app)
     .get('/api/books')
     .end((err, res) => {
@@ -34,6 +34,17 @@ describe('index.js test', () => {
       expect(res.body).to.be.a('array');
       done();
           
+    });
+    
+  });
+
+  it('get /api/books/:ID endpoint with ID = 1', (done) => {
+    chai.request(app)
+    .get('/api/books/1')
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body.ID).to.be.equal(1);
+      done();
     });
     
   });
