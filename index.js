@@ -362,23 +362,64 @@ app.get('/signUp', (req, res) => {
 //post method to add books
 app.post('/api/signUp', (req, res) => {
     const { email, username, password } = req.body;
-    connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
+    connection.query(`SELECT * FROM Registered WHERE email=? AND username=?;`
         , [
             email,
-            username,
-            password
+            username
         ], function (error, results, fields) {
             if (error) {
                 console.error(error);
                 res.status(400).send();
                 return;
+            }else{
+                if(results.length!=0){
+                    //console.log("test");
+                    res.redirect('/signUp');
+                    return;
+                }else{
+                        //console.log("hello");
+                    
+                        connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
+                            , [
+                                email,
+                                username,
+                                password
+                            ], function (error, results, fields) {
+                                if (error) {
+                                    console.error(error);
+                                    res.status(400).send();
+                                    return;
+                                }
+                            })
+                        console.log(username + password + email);
+                        req.session.loggedIn = true;
+                        req.session.email = email;
+                        req.session.username = username;
+                        res.redirect('/personal');
+                }
             }
         })
-    console.log(username + password + email);
-    req.session.loggedIn = true;
-    req.session.email = email;
-    req.session.username = username;
-    res.redirect('/personal');
+        // if(x){
+        //     console.log("hello");
+        
+        //     connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
+        //         , [
+        //             email,
+        //             username,
+        //             password
+        //         ], function (error, results, fields) {
+        //             if (error) {
+        //                 console.error(error);
+        //                 res.status(400).send();
+        //                 return;
+        //             }
+        //         })
+        //     console.log(username + password + email);
+        //     req.session.loggedIn = true;
+        //     req.session.email = email;
+        //     req.session.username = username;
+        //     res.redirect('/personal');
+        // }
 })
 
 //get method to render the form to signup
