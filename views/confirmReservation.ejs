@@ -9,13 +9,9 @@
         // const fetch = require('node-fetch');
         var username = '<%- user %>';
         console.log(username);
-        function myFunction(){
-            // Simulate a mouse click:
-            window.location.href = "http://www.w3schools.com";
-        }
         const reserveAction = async (bid) => {
             const data = {ID: bid, Status: 'Unavailable'};
-            const url = 'http://localhost:3000/api/books/' + bid;
+            const url = '/api/books/' + bid;
             const response = await fetch(url, {
                 method: 'PUT',
                 body: JSON.stringify(data), // string or object
@@ -29,7 +25,7 @@
 
             const data2 = {BID: bid, R_email: username};
             console.log(data2);
-            const url2 = 'http://localhost:3000/api/borrowing';
+            const url2 = '/api/borrowing';
             const response2 = await fetch(url2, {
                 method: 'POST',
                 body: JSON.stringify(data2), // string or object
@@ -40,7 +36,7 @@
             .catch((error) => {
                 console.log(error)
             });
-            window.location.href = "http://localhost:3000/reservationSuccessful";
+            window.location.href = "/reservationSuccessful";
         }
 
     </script>
@@ -71,10 +67,9 @@
 
                         <span style="display: grid; grid-template-columns: 92px min-content;">
                             <p class="bookInfo"><strong>Rating:</strong>  <%=book.AverageRating.toFixed(2)%> </p>
-                            <% for (var i =1; i <book.AverageRating; i++ ) { %>
-                                <!-- <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/> -->
-                                <p>&#11088;</p>
-                                <% } %>
+                            <img width="23" src="https://upload.wikimedia.org/wikipedia/commons/2/29/Gold_Star.svg"/>
+
+             
                         </span>
                         
                         <p class="bookInfo"><strong>Status: </strong>
@@ -93,7 +88,7 @@
                 <div class="d-flex justify-content-center" style="padding-top: 10%">
                     
                     <!-- Need to update for redirection. Need book id? -->
-                    <a href="javascript:void(0);" class="btn btn-secondary" style="margin-right: 0.5%;" onclick="history.back()">Back</a>
+                    <a href="/" class="btn btn-secondary" style="margin-right: 0.5%;">Back</a>
                     <a href="javascript:void(0);" class="btn btn-success" style="margin-right: 0.5%;" onclick="reserveAction('<%=book.ID%>')">Reserve</a>
                 </div>
             </section>
@@ -105,10 +100,9 @@
                 </div>
                 <div class="d-flex justify-content-center">
                     <!-- Need to update for redirection. Need book id? -->
-                    <a href="javascript:void(0);" class="btn btn-secondary" style="margin-right: 0.5%;" onclick="history.back()">Back</a>
+                    <a href="/" class="btn btn-secondary" style="margin-right: 0.5%;">Back</a>
                     <!-- <a href="#" class="btn btn-secondary" style="margin-right: 0.5%;" onclick="javascript:goBack()">Back</a> -->
                 </div>
-                <p><%= user %></p>
             </section>
         <% } %>
 
