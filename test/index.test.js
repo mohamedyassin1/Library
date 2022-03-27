@@ -307,5 +307,26 @@ describe('index.js test', () => {
 
   });
 
+    //Testing delete method to delete books as admin.
+    it('personal /personal render page', (done) => {
+      chai.request(app)
+        .get('/personal')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+  
+    //Testing delete method to delete books as admin.
+    it('submit comment /api/submitComment', (done) => {
+      chai.request(app)
+        .post('/api/submitComment')
+        .send({comments:'Great book', bid:'5', email:'john@gmail.com'})
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });  
+
 });
 //}
