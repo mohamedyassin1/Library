@@ -6,18 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans&display=swap" rel="stylesheet">
 </head>
 <%- include('partials/navbar.ejs') %>
     <style>
         body {
-            background-color: ghostwhite;
+            background: ghostwhite;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .card {
             margin-top: 10px;
             margin-bottom: 10px;
             margin-right: 10px;
-            max-height: 300px;
+            max-height: 400px;
             transition: .1s;
         }
 
@@ -43,7 +47,7 @@
                         <h4 class="display-6">Genre Filter</h4>
                         <form action="/api/genreFilter" method="post">
                             <label for="genre">Genre</label>
-                            <select name="genre" id="genre">
+                            <select name="genre" id="genre" style="margin-top:30px; margin-bottom:30px;">
                                 <option value="none" selected disabled hidden>Select a Genre</option>
                                 <option value="Action">Action</option>
                                 <option value="Adventure">Adventure</option>
@@ -68,7 +72,7 @@
                                                 <li class="list-group-item">
                                                     <b>
                                                         <%= b.Name %>
-                                                    </b> | Average Rating: <%= b.AverageRating %>
+                                                    </b> | Average Rating: <%= b.AverageRating.toFixed(2)%>
                                                         <a href="/api/bookdetail?ID=<%= b.ID %>"
                                                             class="stretched-link"></a>
                                                 </li>

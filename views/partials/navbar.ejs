@@ -1,8 +1,14 @@
 <% if(!logged){ %>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans&display=swap" rel="stylesheet">
     <style>
         .navbar-custom {
-            background-color: crimson;
+            background: #e52d27;
+            background: -webkit-linear-gradient(to right, #b31217, #e52d27);
+            background: linear-gradient(to right, #b31217, #e52d27);
+            font-family: 'Montserrat', sans-serif;
         }
     </style>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark navbar-custom">
@@ -31,7 +37,7 @@
     <script src="/js/bootstrap.min.js"></script>
     <% }else{ %>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
-    
+
         <style>
             .navbar-custom {
                 background-color: crimson;
@@ -42,7 +48,7 @@
             setTimeout("preventBack()", 0);
             window.onunload = function () { null };
         </script>
-        
+
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark navbar-custom">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/" style="margin-right:35%">Library</a>
@@ -67,4 +73,4 @@
             </div>
         </nav>
         <script src="/js/bootstrap.min.js"></script>
-    <% } %>
+        <% } %>

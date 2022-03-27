@@ -10,29 +10,35 @@
 </head>
 <%- include('partials/navbar.ejs') %>
 
-    <body style="background-color:rgb(204, 208, 211);">
-        <div class="container-fluid" >
-            <div class="align-self-center" style="background-color:rgb(255, 255, 255); width:50%; margin:100px auto; border-radius:10px; vertical-align: middle; ">
-                <h1 class="display-5 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">Sign Up</h1>
+    <body style="background-color:ghostwhite">
+        <div class="container-fluid">
+            <div class="align-self-center"
+                style="background-color:rgb(255, 255, 255); width:50%; margin:100px auto; border-radius:10px; vertical-align: middle; ">
+                <h1 class="display-5 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">Sign
+                    Up</h1>
                 <div class="col-sm-4 offset-sm-4 text-center">
                     <form action="/api/signUp" method="post" class="form-inline justify-content-center">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="text" id="email" placeholder="Email" name="email" class="form-control" required>
+                            <input type="text" id="email" placeholder="Email" name="email" class="form-control"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
-                            <input type="text" id="username" placeholder="Username" name="username" class="form-control" required>
+                            <input type="text" id="username" placeholder="Username" name="username" class="form-control"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <br>
-                            <input type="password" id="password" placeholder="Password" name="password" class="form-control" required>
+                            <input type="password" id="password" placeholder="Password" name="password"
+                                class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Confirm Password</label>
                             <br>
-                            <input type="password" id="confirm_password" placeholder="Confirm Password" name="confirm_password" class="form-control" required>
+                            <input type="password" id="confirm_password" placeholder="Confirm Password"
+                                name="confirm_password" class="form-control" required>
                         </div>
                         <meter max="4" id="password-strength-meter"></meter>
                         <p id="password-strength-text"></p>
@@ -45,46 +51,47 @@
         </div>
     </body>
 
-<script>
+    <script>
 
-    var password = document.getElementById("password");
-    var confirm_password = document.getElementById("confirm_password");
+        var password = document.getElementById("password");
+        var confirm_password = document.getElementById("confirm_password");
 
-    function comparePasswords(){
-    if(password.value != confirm_password.value) {
-        confirm_password.setCustomValidity("Passwords Don't Match");
-    } 
-    else {
-        confirm_password.setCustomValidity('');
+        function comparePasswords() {
+            if (password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Passwords Don't Match");
+            }
+            else {
+                confirm_password.setCustomValidity('');
+            }
         }
-    }
-    password.onchange = comparePasswords;
-    confirm_password.onkeyup = comparePasswords;
+        password.onchange = comparePasswords;
+        confirm_password.onkeyup = comparePasswords;
 
-    var strength = {
-    0: "Hackable",
-    1: "Bad",
-    2: "Weak",
-    3: "Good",
-    4: "Unbreakable"
-    }
-    var password = document.getElementById('password');
-    var meter = document.getElementById('password-strength-meter');
-    var text = document.getElementById('password-strength-text');
-
-    password.addEventListener('input', function() {
-    var result = zxcvbn(password.value);
-
-    // Update the password strength meter
-    meter.value = result.score;
-
-    // Update the text indicator
-    if (password.value !== "") {
-        text.innerHTML = "Password Strength: " + strength[result.score]; 
-        } 
-    else {
-            text.innerHTML = "";
+        var strength = {
+            0: "Hackable",
+            1: "Bad",
+            2: "Weak",
+            3: "Good",
+            4: "Unbreakable"
         }
-    });
-</script>
+        var password = document.getElementById('password');
+        var meter = document.getElementById('password-strength-meter');
+        var text = document.getElementById('password-strength-text');
+
+        password.addEventListener('input', function () {
+            var result = zxcvbn(password.value);
+
+            // Update the password strength meter
+            meter.value = result.score;
+
+            // Update the text indicator
+            if (password.value !== "") {
+                text.innerHTML = "Password Strength: " + strength[result.score];
+            }
+            else {
+                text.innerHTML = "";
+            }
+        });
+    </script>
+
 </html>
