@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=text mocha --exit"
+    "test": "nyc --reporter=text mocha --exit",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
