@@ -268,5 +268,44 @@ describe('index.js test', () => {
       });
   });
 
+  //test get ('/api/bookDetail/') with ID = 1
+  it('get /api/bookDetail endpoint with keyword = "the"', (done) => {
+    chai.request(app)
+      .get('/api/bookDetail')
+      .query({ ID: 1 })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+
+      });
+
+  });
+
+  //test get ('/api/getBookDetail/') with no query params
+  it('get /api/getBookDetail endpoint with keyword = "the"', (done) => {
+    chai.request(app)
+      .get('/api/getBookDetail')
+      //.query({ ID: 1 })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+
+      });
+
+  });
+
+  //test get ('/api/getBookDetail/') with name = "The Great Gatsby"
+  it('get /api/getBookDetail endpoint with keyword = "the"', (done) => {
+    chai.request(app)
+      .get('/api/getBookDetail')
+      .query({ name: 'The Great Gatsby' })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+
+      });
+
+  });
+
 });
 //}
