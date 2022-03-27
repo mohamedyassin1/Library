@@ -225,6 +225,28 @@ describe('index.js test', () => {
       });
   });
 
+  //test post ('/api/books/:id') with no values
+  it('put /api/books/:id endpoint with no values', (done) => {
+    chai.request(app)
+    .put('/api/books/:id')
+    .end((err, res) => {
+      expect(res).to.have.status(400);
+      done();
+    });
+  });
+
+  //test post ('/api/books/:id') with valid primary key
+  it('put /api/books/:id new book status', (done) => {
+    chai.request(app)
+    .put('/api/books/1')
+    .send({ID: 1, Status: 'Available'})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();
+    });
+  });
+
+
   //Testing patch method to edit books as admin.
   it('patch /updateBookForm', (done) => {
     chai.request(app)
