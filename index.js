@@ -35,7 +35,7 @@ app.use(session({
 //imgs
 
 app.set('view engine', 'ejs'); //using the ejs view engine, so we can do dynamic HTML templating.
-app.set('views', path.join(__dirname, 'views')); //Add this so that we can run our app from any directory.
+app.set('views', path.join(__dirname, '/views')); //Add this so that we can run our app from any directory.
 
 app.use((req, res, next) => {
     //console.log('Middleware auth called');
@@ -69,7 +69,7 @@ app.get('/api/bookDetail', (req, res) => {
             if (err) throw err;
             connection.query(`SELECT * FROM Comment WHERE BID=?`, [req.query.ID], function (err, commentsResult, fields) {
                 if (err) throw err;
-                res.render('bookdetail', { book: results, comments: commentsResult });
+                res.render('bookDetail', { book: results, comments: commentsResult });
             })
         });
     }
@@ -78,7 +78,7 @@ app.get('/api/bookDetail', (req, res) => {
             if (err) throw err;
             connection.query(`SELECT * FROM Comment WHERE BID=?`, [req.query.ID], function (err, commentsResult, fields) {
                 if (err) throw err;
-                res.render('bookdetailsMember', { book: results, comments: commentsResult, r_email: req.session.email });
+                res.render('bookDetailsMember', { book: results, comments: commentsResult, r_email: req.session.email });
             });
         });
     }
@@ -442,7 +442,7 @@ app.get('/confirmReservation', async (req, res) => {
     //     status: 'Available'
     // }
 
-    const url = 'http://' + req.get('host') + '/api/books/' + req.query.ID;
+    const url = req.protocol + '://' + req.get('host') + '/api/books/' + req.query.ID;
     // console.log(url)
     const response = await fetch(url);
 
@@ -578,11 +578,8 @@ connection.connect((err) => {
 });
 
 //Listening for requests
-const server = app.listen(8080, () => {
-    const host = server.address().address;
-    const port = server.address().port;
-
-    console.log(`Example app listening at http://${host}:${port}`);
+app.listen(3000, () => {
+    console.log("listening on port 3000");
 });
 
 module.exports = { app, connection };
