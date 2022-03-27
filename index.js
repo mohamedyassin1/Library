@@ -433,7 +433,6 @@ app.get('/logout', (req, res) => {
 //confirm book reservation page
 app.get('/confirmReservation', async (req, res) => {
     const fetch = require('node-fetch');
-    //'http://localhost:3000/api/books/1'
 
     // var book = {
     //     book_name: "",

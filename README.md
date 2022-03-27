@@ -8,6 +8,6 @@ Install nodemon via "npm install -g nodemon"
 Install fetch via "npm install node-fetch@2"
 To run, do:
 "nodemon index.js" on command prompt in the same directory
-and go to localhost:3000 on google chrome.
+and go to localhost:8080 on google chrome.
 
 When you make changes, do not push the node_modules folder, keep that on your own machine, and **work on your own branch**.
