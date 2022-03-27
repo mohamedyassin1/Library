@@ -53,6 +53,7 @@
             color: #c59b08;
         }
     </style>
+
     <body>
         <div style="padding: 2% 20% 0 20%;">
             <h1>Book Detail</h1>
@@ -108,22 +109,22 @@
         
                     });
                 </script> -->
-
+                <h2 style="margin-top:20px; padding-bottom:10px;">Comments</h2>
                 <div class="submitted_comments">
-                   <% for (let c of comments) { %>
-                       <li class="list-group-item">
-                           <h5>
-                               <%= c.R_email %>
-                           </h5>
-                           <%=c.Comment %>
-                       </li>
-                       <% } %>
-               </div>
-                <section style="position: absolute;padding-top: 160px">
-                    <a href="/">Back to Home</a>
+                    <% for (let c of comments) { %>
+                        <li class="list-group-item">
+                            <h5>
+                                <%= c.R_email %>
+                            </h5>
+                            <%=c.Comment %>
+                        </li>
+                        <% } %>
+                </div>
+                <section style="position: absolute;padding-top: 80px; padding-bottom:80px;">
+                    <a href="/" class="btn btn-outline-danger">Back to Home</a>
                 </section>
         </div>
-        
+
     </body>
 
 </html>

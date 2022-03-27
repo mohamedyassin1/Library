@@ -12,9 +12,10 @@
 <%- include('partials/loggedInNavbar.ejs') %>
     <!-- This 5 stars rating style is referenced to this source. https://codepen.io/hesguru/pen/BaybqXv -->
     <style>
-        textarea{
-        border-radius: 10px;
+        textarea {
+            border-radius: 10px;
         }
+
         .rate {
             float: left;
             height: 46px;
@@ -56,9 +57,8 @@
         .rate>label:hover~input:checked~label {
             color: #c59b08;
         }
-
-        
     </style>
+
     <body>
         <div style="padding: 2% 20% 0 20%;">
             <h1>Book Detail</h1>
@@ -86,7 +86,7 @@
                     </label>
                     <br>
                     <div class="confirmRes">
-                    <a href="/confirmReservation?ID=<%= book[0].ID %>">Reserve</a>
+                        <a href="/confirmReservation?ID=<%= book[0].ID %>" class="btn btn-outline-danger">Reserve</a>
                     </div>
                 </section>
                 <section>
@@ -109,10 +109,10 @@
                             <label for="star2" title="text">2 stars</label>
                             <input type="radio" id="star1" name="bookrate" value="1" />
                             <label for="star1" title="text">1 star</label>
-                            <input type="hidden" name="bid" value="<%=book[0].ID%>" required/>
-                            <input type="hidden" name="email" value="<%=r_email%>" required/>
+                            <input type="hidden" name="bid" value="<%=book[0].ID%>" required />
+                            <input type="hidden" name="email" value="<%=r_email%>" required />
                         </div>
-                        <input type="submit" value="Rate"/>
+                        <input type="submit" value="Rate" class="btn btn-outline-danger" />
                     </form>
                 </section>
                 <script>
@@ -131,15 +131,16 @@
                     // });
                 </script>
                 <div class="comment">
-                    <form action="/api/submitComment" method = "post">
-                        <input type="hidden" name="bid" value="<%=book[0].ID%>" required/>
-                        <input type="hidden" name="email" value="<%=r_email%>" required/>
-                        <textarea id="comments" name="comments" rows="2" cols="50" maxlength="100" required></textarea>
-                        
-                        <button type="submit">Submit</button>
+                    <form action="/api/submitComment" method="post">
+                        <input type="hidden" name="bid" value="<%=book[0].ID%>" required />
+                        <input type="hidden" name="email" value="<%=r_email%>" required />
+                        <textarea class="form-control" id="comments" name="comments" rows="2" cols="50" maxlength="100"
+                            required></textarea>
+
+                        <button type="submit" class="btn btn-outline-danger">Submit</button>
                     </form>
                 </div>
-                 <div class="submitted_comments">
+                <div class="submitted_comments">
                     <% for (let c of comments) { %>
                         <li class="list-group-item">
                             <h5>
@@ -149,10 +150,11 @@
                         </li>
                         <% } %>
                 </div>
-                <section style="position: absolute;padding-top: 160px">
-                    <a href="/personal">Back to Home</a>
+                <section style="position: absolute;padding-top: 80px; padding-bottom:80px;">
+                    <a href="/personal" class="btn btn-outline-danger">Back to Home</a>
                 </section>
         </div>
-        
+
     </body>
+
 </html>
