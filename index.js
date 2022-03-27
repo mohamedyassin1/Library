@@ -371,55 +371,55 @@ app.post('/api/signUp', (req, res) => {
                 console.error(error);
                 res.status(400).send();
                 return;
-            }else{
-                if(results.length!=0){
+            } else {
+                if (results.length != 0) {
                     //console.log("test");
                     res.redirect('/signUp');
                     return;
-                }else{
-                        //console.log("hello");
-                    
-                        connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
-                            , [
-                                email,
-                                username,
-                                password
-                            ], function (error, results, fields) {
-                                if (error) {
-                                    console.error(error);
-                                    res.status(400).send();
-                                    return;
-                                }
-                            })
-                        console.log(username + password + email);
-                        req.session.loggedIn = true;
-                        req.session.email = email;
-                        req.session.username = username;
-                        res.redirect('/personal');
+                } else {
+                    //console.log("hello");
+
+                    connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
+                        , [
+                            email,
+                            username,
+                            password
+                        ], function (error, results, fields) {
+                            if (error) {
+                                console.error(error);
+                                res.status(400).send();
+                                return;
+                            }
+                        })
+                    console.log(username + password + email);
+                    req.session.loggedIn = true;
+                    req.session.email = email;
+                    req.session.username = username;
+                    res.redirect('/personal');
                 }
             }
         })
-        // if(x){
-        //     console.log("hello");
-        
-        //     connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
-        //         , [
-        //             email,
-        //             username,
-        //             password
-        //         ], function (error, results, fields) {
-        //             if (error) {
-        //                 console.error(error);
-        //                 res.status(400).send();
-        //                 return;
-        //             }
-        //         })
-        //     console.log(username + password + email);
-        //     req.session.loggedIn = true;
-        //     req.session.email = email;
-        //     req.session.username = username;
-        //     res.redirect('/personal');
-        // }
+    // if(x){
+    //     console.log("hello");
+
+    //     connection.query(`INSERT INTO Registered (email, username, password) VALUES (?,?,?)`
+    //         , [
+    //             email,
+    //             username,
+    //             password
+    //         ], function (error, results, fields) {
+    //             if (error) {
+    //                 console.error(error);
+    //                 res.status(400).send();
+    //                 return;
+    //             }
+    //         })
+    //     console.log(username + password + email);
+    //     req.session.loggedIn = true;
+    //     req.session.email = email;
+    //     req.session.username = username;
+    //     res.redirect('/personal');
+    // }
 })
 
 //get method to render the form to signup
@@ -442,7 +442,7 @@ app.get('/confirmReservation', async (req, res) => {
     //     status: 'Available'
     // }
 
-    const url = 'http://localhost:3000/api/books/' + req.query.ID;
+    const url = 'http://' + req.get('host') + '/api/books/' + req.query.ID;
     // console.log(url)
     const response = await fetch(url);
 
@@ -582,4 +582,4 @@ app.listen(3000, () => {
     console.log("listening on port 3000");
 });
 
-module.exports = {app, connection};
+module.exports = { app, connection };
