@@ -203,6 +203,16 @@ describe('index.js test', () => {
     
   });
 
+  //Test book rating is posted, by redirecting back to valid HTML page
+  it('post AddBookRating', (done) => {
+    chai.request(app)
+    .post('/api/AddRatingForABook')
+    .send({email: 'john@gmail.com', bookrate:'4', bid:'3npm'})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();  
+    });
+  });
 
 
 });
