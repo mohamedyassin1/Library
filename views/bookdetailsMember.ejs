@@ -134,10 +134,9 @@
                     <form action="/api/submitComment" method="post">
                         <input type="hidden" name="bid" value="<%=book[0].ID%>" required />
                         <input type="hidden" name="email" value="<%=r_email%>" required />
-                        <textarea class="form-control" id="comments" name="comments" rows="2" cols="50" maxlength="100"
-                            required></textarea>
+                        <textarea id="comments" name="comments" rows="2" cols="50" maxlength="100" required></textarea>
 
-                        <button type="submit" class="btn btn-outline-danger">Submit</button>
+                        <button type="submit">Submit</button>
                     </form>
                 </div>
                 <div class="submitted_comments">
