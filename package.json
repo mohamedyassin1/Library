@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "nyc --reporter=text mocha --exit",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/connect-datastore": "^5.0.3",
+    "@google-cloud/datastore": "^6.6.2",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
     "ejs": "^3.1.6",
