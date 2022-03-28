@@ -456,6 +456,44 @@ app.get('/confirmReservation', async (req, res) => {
     res.render('confirmReservation', { book: book, user: req.session.email, loggedIn: req.session.loggedIn });
 })
 
+app.get('/accountInformation', async (req, res) => {
+    const fetch = require('node-fetch');
+    if(req.session.loggedIn != true){
+        res.redirect('/');
+        return;
+    }
+
+    const url = req.protocol + '://' + req.get('host') + '/api/reservedBooks/' + req.session.email;
+
+
+    // console.log(url)
+    const response = await fetch(url);
+
+    const books = await response.json();
+    // console.log(books);
+
+    res.render('accountInformation', {books: books, user: req.session.email, loggedIn: req.session.loggedIn });
+})
+
+
+app.get('/api/reservedBooks/:email', (req, res) => {    
+    
+    connection.query(`SELECT Name, Genre FROM Books, Borrowing WHERE BID = ID AND R_email = ?`
+        , [
+            req.params.email
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+            res.json(results);
+        });
+});
+
+
+
+
 app.put('/api/books/:id', (req, res) => {
     const { ID, Status } = req.body;
     //console.log(req.body);

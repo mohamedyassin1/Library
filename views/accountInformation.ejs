@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+</head>
+
+<%- include('partials/navbar.ejs') %>
+
+<body>
+    <% if(loggedIn == true) { %>
+      <h2 style="text-align:center; padding-top: 5%; padding-bottom: 2%;">Hello <%= user %>, 
+      <% if(books.length == 0){ %>
+        you have no borrowed books</h1>
+      <% } else { %>
+        here are your borrowed books</h1>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Genre</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(let i = 0; i < books.length; i++){ %>
+              <tr>
+                <th scope="row"><%= i+1 %></th>
+                <td><%= books[i].Name %></td>
+                <td><%= books[i].Genre %></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      <% } %>
+      
+      
+      
+
+    <% } else { %>
+    <% } %>
+
+</body>
+</html>
