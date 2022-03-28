@@ -220,8 +220,13 @@ app.get('/api/getBookDetail', (req, res) => {
 //post method to submit comment
 app.post('/api/submitComment', (req, res) => {
     const { comments, bid, email } = req.body;
-    var sql = `INSERT INTO Comment (BID, Comment, R_email) VALUES ('${bid}', '${comments}', '${email}')`;
-    connection.query(sql, function (error, results, fields) {
+    // var sql = `INSERT INTO Comment (BID, Comment, R_email) VALUES ('${bid}', '${comments}', '${email}')`;
+    connection.query("INSERT INTO Comment (BID, Comment, R_email) VALUES (?, ?, ?)",
+    [
+        bid,
+        comments,
+        email
+    ], function (error, results, fields) {
         if (error) {
             console.error(error);
             res.status(400).send();
