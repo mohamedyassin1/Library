@@ -4,6 +4,9 @@ const methodOverride = require('method-override')
 const path = require('path');
 const mysql = require('mysql');
 const session = require('express-session');
+const { Datastore } = require('@google-cloud/datastore');
+const { DatastoreStore } = require('@google-cloud/connect-datastore');
+
 
 const connection = mysql.createConnection({
     host: '34.83.176.15',
@@ -19,14 +22,34 @@ app.use(express.urlencoded({ extended: true })) //to parse HTML form data (aka r
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.json());
 app.use(session({
-    // secret: 'secret',
-    // resave: true,
-    // saveUninitialized: true
     secret: 'secretforseng401librarywebapplication',
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 1000 * 60 * 60 },//60 minutes
-    rolling: true
+    rolling: true,
+    store: new DatastoreStore({
+        kind: 'express-sessions',
+
+        // Optional: expire the session after this many milliseconds.
+        // note: datastore does not automatically delete all expired sessions
+        // you may want to run separate cleanup requests to remove expired sessions
+        // 0 means do not expire
+        expirationMs: 0,
+
+        dataset: new Datastore({
+
+            // For convenience, @google-cloud/datastore automatically looks for the
+            // GCLOUD_PROJECT environment variable. Or you can explicitly pass in a
+            // project ID here:
+            projectId: process.env.GCLOUD_PROJECT,
+
+            // For convenience, @google-cloud/datastore automatically looks for the
+            // GOOGLE_APPLICATION_CREDENTIALS environment variable. Or you can
+            // explicitly pass in that path to your key file here:
+            keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
+        })
+    }),
+
 }));
 
 //public
