@@ -222,17 +222,17 @@ app.post('/api/submitComment', (req, res) => {
     const { comments, bid, email } = req.body;
     // var sql = `INSERT INTO Comment (BID, Comment, R_email) VALUES ('${bid}', '${comments}', '${email}')`;
     connection.query("INSERT INTO Comment (BID, Comment, R_email) VALUES (?, ?, ?)",
-    [
-        bid,
-        comments,
-        email
-    ], function (error, results, fields) {
-        if (error) {
-            console.error(error);
-            res.status(400).send();
-            return;
-        }
-    })
+        [
+            bid,
+            comments,
+            email
+        ], function (error, results, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            }
+        })
     //console.log(email+bid+comments);
     res.redirect('/personal');
 })
@@ -262,6 +262,12 @@ app.get('/login', (req, res) => {
     res.render('loginForm');
 })
 
+
+//get method to render the form to admin login
+app.get('/adminLogin', (req, res) => {
+    res.render('adminLoginForm');
+})
+
 //post method to login
 app.post('/api/login', (req, res) => {
     const { email, username, password } = req.body;
@@ -287,39 +293,7 @@ app.post('/api/login', (req, res) => {
                 if (found) {
                     res.redirect('/personal');
                 } else {
-                    connection.query(`SELECT email,username,password FROM Admin`
-                        , function (error, result, fields) {
-                            if (error) {
-
-                                console.error(error);
-                                res.status(400).send();
-                                return;
-                            } else {
-
-                                var obj = result;
-                                let found = false;
-                                for (var i = 0; i < obj.length; i++) {
-                                    //console.log(obj[i].email + email + obj[i].username + username + obj[i].password + password)
-                                    if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
-                                        //res.redirect('/personal');
-                                        console.log('dsad2')
-                                        req.session.loggedIn = true;
-                                        req.session.email = email;
-                                        req.session.username = username;
-                                        req.session.admin = true;
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                if (found) {
-                                    console.log('dsad')
-                                    res.redirect('/admin');
-                                } else {
-
-                                    res.redirect('/login');
-                                }
-                            }
-                        })
+                    res.redirect('/login');
                 }
             }
         })
@@ -347,6 +321,64 @@ app.post('/api/login', (req, res) => {
     //     res.redirect('/login');
     // }
 })
+
+//post method for admin login 
+//post method to login
+app.post('/api/adminLogin', (req, res) => {
+    const { email, username, password } = req.body;
+    connection.query(`SELECT email,username,password FROM Admin`
+        , function (error, result, fields) {
+            if (error) {
+                console.error(error);
+                res.status(400).send();
+                return;
+            } else {
+                var obj = result;
+                let found = false;
+                for (var i = 0; i < obj.length; i++) {
+                    if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
+                        console.log('dsads')
+
+                        req.session.loggedIn = true;
+                        req.session.email = email;
+                        req.session.username = username;
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    res.redirect('/admin');
+                } else {
+                    res.redirect('/adminLogin');
+                }
+            }
+        })
+
+    //Below for testing. Uncommet above to actually use DB
+    // var obj = [
+    //     { "email": "john@gmail.com", "username": "John", "password": "12345" },
+    //     { "email": "kelly@gmail.com", "username": "Kelly", "password": "54321" }
+    // ];
+
+    // let found = false;
+    // for (var i = 0; i < obj.length; i++) {
+    //     if (obj[i].email == email && obj[i].username == username && obj[i].password == password) {
+    //         req.session.loggedIn = true;
+    //         req.session.username = email;
+    //         found = true;
+    //         break;
+    //         //res.redirect('/personal');
+    //         //console.log('/personal');
+    //     }
+    // }
+    // if (found) {
+    //     res.redirect('/personal');
+    // } else {
+    //     res.redirect('/login');
+    // }
+})
+
+
 //get method personal
 app.get('/personal', (req, res) => {
     if (req.session.loggedIn) {
@@ -458,7 +490,7 @@ app.get('/confirmReservation', async (req, res) => {
 
 app.get('/accountInformation', async (req, res) => {
     const fetch = require('node-fetch');
-    if(req.session.loggedIn != true){
+    if (req.session.loggedIn != true) {
         res.redirect('/');
         return;
     }
@@ -472,12 +504,12 @@ app.get('/accountInformation', async (req, res) => {
     const books = await response.json();
     // console.log(books);
 
-    res.render('accountInformation', {books: books, user: req.session.email, loggedIn: req.session.loggedIn });
+    res.render('accountInformation', { books: books, user: req.session.email, loggedIn: req.session.loggedIn });
 })
 
 
-app.get('/api/reservedBooks/:email', (req, res) => {    
-    
+app.get('/api/reservedBooks/:email', (req, res) => {
+
     connection.query(`SELECT Name, Genre FROM Books, Borrowing WHERE BID = ID AND R_email = ?`
         , [
             req.params.email
