@@ -581,7 +581,7 @@ app.post('/api/books', (req, res) => {
             return;
         }
     })
-    res.redirect('/');
+    res.redirect('/admin');
 })
 app.get('/updateBookForm', (req, res) => {
     connection.query("SELECT * FROM Books", function (err, books, fields) {
