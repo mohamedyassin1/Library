@@ -510,7 +510,7 @@ app.get('/accountInformation', async (req, res) => {
 
 app.get('/api/reservedBooks/:email', (req, res) => {
 
-    connection.query(`SELECT Name, Genre FROM Books, Borrowing WHERE BID = ID AND R_email = ?`
+    var query = connection.query(`SELECT Name, Genre FROM Books, Borrowing WHERE BID = ID AND R_email = ?`
         , [
             req.params.email
         ], function (error, results, fields) {
@@ -521,6 +521,7 @@ app.get('/api/reservedBooks/:email', (req, res) => {
             }
             res.json(results);
         });
+    // console.log(query.sql);
 });
 
 
