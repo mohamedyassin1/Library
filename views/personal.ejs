@@ -35,29 +35,32 @@
         }
 
         .card {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        margin-right: 10px;
-        max-height: 300px;
-        transition: .1s;
-      }
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            max-height: 300px;
+            transition: .1s;
+        }
 
-      .card-img-top {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
+        .card-img-top {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
 
-      .card:hover {
-        box-shadow: 2px 2px 2px grey;
-        transform: scale(1.05);
-      }
+        .card:hover {
+            box-shadow: 2px 2px 2px grey;
+            transform: scale(1.05);
+        }
     </style>
 
     <body>
-        <div class="container-fluid" >
-            <div class="align-self-center" style="background-color:rgb(255, 255, 255); width:50%; margin:100px auto; border-radius:10px; vertical-align: middle; ">
-                <h1 class="display-5 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">Logged In <%=email%></h1>
+        <div class="container-fluid">
+            <div class="align-self-center"
+                style="background-color:rgb(255, 255, 255); width:50%; margin:100px auto; border-radius:10px; vertical-align: middle; ">
+                <h1 class="display-5 text-center" style="background-color:rgb(255, 255, 255); border-radius: 10px;">
+                    Logged In <%=email%>
+                </h1>
             </div>
         </div>
         <div class="container-fluid">
@@ -65,22 +68,40 @@
                 Library!</h2>
             <div class=" row">
                 <div class="col-4 text-dark text-center">
-                    <h3>Top Rated Books</h3>
-                    <% books.sort(function(a, b) { %>
-                        <% return b.AverageRating - a.AverageRating ; %>
-                            <% }); %>
-                                <ul class="list-group">
-                                    <% let sortedRatings=[]; %>
-                                        <% for (let b of books) { %>
-                                            <li class="list-group-item">
-                                                <%= b.Name %> Average Rating: <%= b.AverageRating %>
-                                                        <!-- <a href="/api/bookdetailMember?ID=<%= b.ID %>"
+                    <h4 class="display-6">Genre Filter</h4>
+                    <form action="/api/genreFilter" method="post">
+                        <label for="genre">Genre</label>
+                        <select name="genre" id="genre" style="margin-top:30px; margin-bottom:30px;">
+                            <option value="none" selected disabled hidden>Select a Genre</option>
+                            <option value="Action">Action</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Mystery">Mystery</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Science Fiction">Science Fiction</option>
+                            <option value="History">History</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Manga">Manga</option>
+                        </select>
+                        <input type="submit" value="Filter" class="btn btn-outline-danger" />
+                    </form>
+                    <h4>Top Rated Books</h3>
+                        <% books.sort(function(a, b) { %>
+                            <% return b.AverageRating - a.AverageRating ; %>
+                                <% }); %>
+                                    <ul class="list-group">
+                                        <% let sortedRatings=[]; %>
+                                            <% for (let b of books) { %>
+                                                <li class="list-group-item">
+                                                    <%= b.Name %> Average Rating: <%= b.AverageRating.toFixed(2) %>
+                                                            <!-- <a href="/api/bookdetailMember?ID=<%= b.ID %>"
                                                             class="stretched-link"></a> -->
-                                                        <a href="/api/bookdetail?ID=<%= b.ID %>"
-                                                            class="stretched-link"></a>
-                                            </li>
-                                            <% } %>
-                                </ul>
+                                                            <a href="/api/bookdetail?ID=<%= b.ID %>"
+                                                                class="stretched-link"></a>
+                                                </li>
+                                                <% } %>
+                                    </ul>
                 </div>
                 <div class=" col-8">
                     <div class="row">
@@ -103,8 +124,8 @@
                                         <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"></a>
                                     </div>
                                 </div>
-                            <%#</div>%>
-                            <% } %>
+                                <%#< /div>%>
+                                    <% } %>
                     </div>
                 </div>
             </div>
