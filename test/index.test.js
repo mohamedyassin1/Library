@@ -234,6 +234,7 @@ describe('index.js test', () => {
       done();
     });
   });
+  
 
   //test post ('/api/books/:id') with valid primary key
   it('put /api/books/:id new book status', (done) => {
@@ -246,6 +247,35 @@ describe('index.js test', () => {
     });
   });
 
+  //testing reserved books endpoint with valid email
+  it('/api/reservedBooks/ valid email', (done) => {
+    chai.request(app)
+    .get('/api/reservedBooks/123')
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();
+    });
+  });
+
+  //test post ('/api/books/:id') with no values
+  it('confirmReservation page render', (done) => {
+    chai.request(app)
+    .get('/confirmReservation?ID=1')
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();
+    });
+  });
+
+  //render accountInformation
+  it('account information page render', (done) => {
+    chai.request(app)
+    .get('/accountInformation')
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      done();
+    });
+  });
 
   //Testing patch method to edit books as admin.
   it('patch /updateBookForm', (done) => {
