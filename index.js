@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(session({
     store: new DatastoreStore({
         kind: 'express-sessions',
+        secret: 'secretforseng401librarywebapplication',
         resave: false,
         saveUninitialized: true,
         cookie: { maxAge: 1000 * 60 * 60 },//60 minutes
@@ -47,7 +48,7 @@ app.use(session({
             keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
         })
     }),
-    secret: 'secretforseng401librarywebapplication'
+
 }));
 
 //public
