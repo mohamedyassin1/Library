@@ -94,11 +94,16 @@
                                         <% let sortedRatings=[]; %>
                                             <% for (let b of books) { %>
                                                 <li class="list-group-item">
-                                                    <%= b.Name %> Average Rating: <%= b.AverageRating.toFixed(2) %>
-                                                            <!-- <a href="/api/bookdetailMember?ID=<%= b.ID %>"
+                                                    <b>
+                                                        <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"
+                                                            style="text-decoration:none; color:black;">
+                                                            <%= b.Name %>
+                                                        </a>
+
+                                                        </a>
+                                                    </b> | Average Rating: <%= b.AverageRating.toFixed(2) %>
+                                                        <!-- <a href="/api/bookdetailMember?ID=<%= b.ID %>"
                                                             class="stretched-link"></a> -->
-                                                            <a href="/api/bookdetail?ID=<%= b.ID %>"
-                                                                class="stretched-link"></a>
                                                 </li>
                                                 <% } %>
                                     </ul>
@@ -113,7 +118,12 @@
                                         alt="Card image cap">
                                     <div class="card-body">
                                         <h5 class="card-title">
-                                            <%= b.Name %>
+                                            <b>
+                                                <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"
+                                                    style="text-decoration:none; color:black;">
+                                                    <%= b.Name %>
+                                                </a>
+                                            </b>
                                         </h5>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">
@@ -121,7 +131,7 @@
                                             </li>
                                         </ul>
                                         <!-- <a href="/api/bookdetailMember?ID=<%= b.ID %>" class="stretched-link"></a> -->
-                                        <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"></a>
+
                                     </div>
                                 </div>
                                 <%#< /div>%>
