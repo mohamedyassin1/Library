@@ -67,10 +67,13 @@
                                             <% for (let b of books) { %>
                                                 <li class="list-group-item">
                                                     <b>
-                                                        <%= b.Name %>
+                                                        <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"
+                                                            style="text-decoration:none; color:black;">
+                                                            <%= b.Name %>
+                                                        </a>
+
+                                                        </a>
                                                     </b> | Average Rating: <%= b.AverageRating.toFixed(2)%>
-                                                        <a href="/api/bookdetail?ID=<%= b.ID %>"
-                                                            class="stretched-link"></a>
                                                 </li>
                                                 <% } %>
                                     </ul>
@@ -87,7 +90,10 @@
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             <b>
-                                                <%= b.Name %>
+                                                <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"
+                                                    style="text-decoration:none; color:black;">
+                                                    <%= b.Name %>
+                                                </a>
                                             </b>
                                         </h5>
                                         <ul class="list-group list-group-flush">
@@ -100,7 +106,6 @@
                                                 Status: <%= b.Status %>
                                             </li>
                                         </ul>
-                                        <a href="/api/bookdetail?ID=<%= b.ID %>" class="stretched-link"></a>
                                     </div>
                                 </div>
                                 <%#< /div>%>
