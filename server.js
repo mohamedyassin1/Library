@@ -650,7 +650,6 @@ app.delete('/deleteBook', (req, res) => {
             })
         }
     })
-    res.redirect('/admin');
 })
 //add borrowing table to db
 app.post('/api/genreFilter', (req, res) => {

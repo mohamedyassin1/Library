@@ -590,12 +590,23 @@ app.get('/updateBookForm', (req, res) => {
 })
 app.patch('/updateBookForm', (req, res) => {
     const { name, status } = req.body;
-    var sql = `UPDATE Books SET Status =  "${status}" WHERE Name = "${name}"`;
+    var sql = `UPDATE Books SET Status =  "${status}" WHERE Name = "${name}";`;
     connection.query(sql, function (error, results) {
         if (error) {
             console.error(error);
             res.status(400).send();
             return;
+        }
+        else {
+            var sql2 = `DELETE FROM Borrowing WHERE BID IN (SELECT ID FROM Books WHERE Name = "${name}")`;
+            connection.query(sql2, function (error, results) {
+                if (error) {
+                    console.error(error);
+                    res.status(400).send();
+                    return;
+                }
+            });
+
         }
     })
     res.redirect('/admin');
