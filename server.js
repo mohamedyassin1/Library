@@ -622,7 +622,7 @@ app.patch('/updateBookForm', (req, res) => {
             return;
         }
     })
-    res.redirect('/');
+    res.redirect('/admin');
 })
 app.get('/deleteBookForm', (req, res) => {
     connection.query("SELECT * FROM Books", function (err, books, fields) {
@@ -640,7 +640,7 @@ app.delete('/deleteBook', (req, res) => {
             return;
         }
     })
-    res.redirect('/');
+    res.redirect('/admin');
 })
 //add borrowing table to db
 app.post('/api/genreFilter', (req, res) => {
