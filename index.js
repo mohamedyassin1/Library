@@ -555,20 +555,6 @@ app.put('/api/books/:id', (req, res) => {
         })
 });
 
-app.delete('/api/deleteBorrowing/:bid', (req, res) => {
-    var query = connection.query(`DELETE FROM Borrowing WHERE BID = ?`
-        , [
-            req.params.bid
-        ], function (error, results, fields) {
-            if (error) {
-                console.error(error);
-                res.status(400).send();
-                return;
-            }
-            res.json(results);
-        });
-})
-
 app.get('/reservationSuccessful', (req, res) => {
     res.render('reservationSuccessful');
 });
